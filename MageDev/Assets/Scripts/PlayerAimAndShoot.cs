@@ -17,11 +17,6 @@ public class PlayerAimAndShoot : MonoBehaviour
     private Vector2 worldPosiotion;
     private Vector2 direction;
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         HandleWeaponRotation();
