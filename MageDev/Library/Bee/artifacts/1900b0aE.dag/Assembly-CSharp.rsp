@@ -395,10 +395,13 @@
 "Assets/Scripts/CameraMovement.cs"
 "Assets/Scripts/Enemy.cs"
 "Assets/Scripts/IDamageable.cs"
+"Assets/Scripts/Managers/EnemyManager.cs"
+"Assets/Scripts/Managers/GameManager.cs"
+"Assets/Scripts/Managers/StageManager.cs"
 "Assets/Scripts/PlayerAimAndShoot.cs"
 "Assets/Scripts/PlayerController.cs"
+"Assets/Scripts/PlayerHealth.cs"
 "Assets/Scripts/PlayerProjectile.cs"
-"Assets/Scripts/ProjectileBehaviour.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 /deterministic
