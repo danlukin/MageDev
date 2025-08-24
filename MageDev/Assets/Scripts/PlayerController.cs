@@ -4,29 +4,10 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 10f;
-    [SerializeField] private float currentHealth;
     public Rigidbody2D body;
     public float speed;
-
-    public static event Action<PlayerController> OnPlayerKilled;
-
-    void Awake()
-    {
-        StageManager.OnWaveStateChanged += GameManagerOnWaveStateChanged;
-    }
-
-    void OnDestroy()
-    {
-        StageManager.OnWaveStateChanged -= GameManagerOnWaveStateChanged;
-    }
-
-    void Start()
-    {
-        currentHealth = maxHealth;
-    }
 
     void Update()
     {
@@ -39,32 +20,4 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     }
 
-    public void Damage(float damageAmount)
-    {
-        currentHealth -= damageAmount;
-
-        if (currentHealth <= 0)
-        {
-            speed = 0;
-            OnPlayerKilled?.Invoke(this);
-        }
-    }
-    
-    private void GameManagerOnWaveStateChanged(WaveState state)
-    {
-        if (state == WaveState.Dead)
-        {
-            Debug.Log("ded");
-        }
-    }
-
-    public void Heal(float healAmount)
-    {
-        currentHealth += healAmount;
-
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-    }
 }

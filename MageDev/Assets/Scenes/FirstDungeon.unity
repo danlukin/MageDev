@@ -132,10 +132,11 @@ GameObject:
   m_Component:
   - component: {fileID: 115762478}
   - component: {fileID: 115762477}
-  - component: {fileID: 115762479}
   - component: {fileID: 115762481}
   - component: {fileID: 115762480}
+  - component: {fileID: 115762479}
   - component: {fileID: 115762482}
+  - component: {fileID: 115762483}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -223,8 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae10e1d23c0e5114b8527bb8c6585ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 0
   body: {fileID: 115762481}
   speed: 5
 --- !u!61 &115762480
@@ -314,6 +313,20 @@ MonoBehaviour:
   weapon: {fileID: 1507086346}
   projectile: {fileID: 5099896083119982315, guid: 671bb4f513aafd4478792b8bc461fe67, type: 3}
   projectileSpawnPoint: {fileID: 1993262172}
+--- !u!114 &115762483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115762476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da662c25cc054a429b779f91fbd8cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  currentHealth: 0
 --- !u!1 &229283091
 GameObject:
   m_ObjectHideFlags: 0

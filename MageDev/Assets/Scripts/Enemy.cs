@@ -26,6 +26,11 @@ public class Enemy : MonoBehaviour, IDamageable
         EnemyManager.DestroyEnemy += EnemyManagerDestroyEnemy;
     }
 
+    void OnDestroy()
+    {
+        EnemyManager.DestroyEnemy -= EnemyManagerDestroyEnemy;
+    }
+
     private void EnemyManagerDestroyEnemy(EnemyManager state)
     {
         Destroy(gameObject);
