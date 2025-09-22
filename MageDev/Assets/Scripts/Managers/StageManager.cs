@@ -1,28 +1,31 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
 
     public static StageManager Instance;
     public WaveState waveState;
-    public int WaveNumber;
     public static event Action<WaveState> OnWaveStateChanged;
+    public Text WaveUI;
+    public static int waveNumber;
 
     [SerializeField] GameObject deathScreen;
+
+    private bool waveChanged = false;
 
     void Awake()
     {
         Instance = this;
         PlayerHealth.OnPlayerKilled += PlayerHealthOnPlayerKilled;
+        EnemyManager.OnWaveCompleted += EnemyManagerOnWaveCompleted;
     }
 
     void OnDestroy()
     {
         PlayerHealth.OnPlayerKilled -= PlayerHealthOnPlayerKilled;
+        EnemyManager.OnWaveCompleted -= EnemyManagerOnWaveCompleted;
     }
 
     void Start()
@@ -43,7 +46,8 @@ public class StageManager : MonoBehaviour
 
     private void InitializeStage()
     {
-        WaveNumber = 1;
+        waveNumber = 1;
+        UpdateWaveUI();
         UpdateWaveState(WaveState.WaveStart);
 
     }
@@ -56,20 +60,56 @@ public class StageManager : MonoBehaviour
 
         switch (newState)
         {
-            case WaveState.WaveEnd:
+            case WaveState.WaveComplete:
+                if (!waveChanged)
+                {
+                    UpdateWaveNumber("increment");
+                    UpdateWaveState(WaveState.WaveStart);
+                }
                 break;
             case WaveState.Dead:
+                UpdateWaveNumber("reset");
                 break;
             case WaveState.WaveStart:
+                waveChanged = false;
                 break;
         }
 
         OnWaveStateChanged?.Invoke(newState);
     }
 
+    private void EnemyManagerOnWaveCompleted(EnemyManager state)
+    {
+        UpdateWaveState(WaveState.WaveComplete);
+    }
+
     private void PlayerHealthOnPlayerKilled(PlayerHealth state)
     {
         UpdateWaveState(WaveState.Dead);
+    }
+
+    private void UpdateWaveNumber(string task)
+    {
+        switch (task)
+        {
+            case "increment":
+                ++waveNumber;
+                break;
+            case "decrement":
+                --waveNumber;
+                break;
+            case "reset":
+                waveNumber = 1;
+                break;
+        }
+        
+        UpdateWaveUI();
+        waveChanged = true;
+    }
+
+    private void UpdateWaveUI()
+    {
+        WaveUI.text = "Wave " + waveNumber;
     }
 
 }
@@ -78,5 +118,5 @@ public enum WaveState
 {
     WaveStart,
     Dead,
-    WaveEnd
+    WaveComplete
 }

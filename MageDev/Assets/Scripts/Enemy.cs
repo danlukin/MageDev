@@ -11,9 +11,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private float currentHealth;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float moveSpeed = 2f;
-    Rigidbody2D rb;
-    Transform target;
-    Vector2 moveDirection;
+    private Rigidbody2D rb;
+    private Transform target;
+    private Vector2 moveDirection;
 
     // damage to player
     private IDamageable playerCollision;
@@ -39,39 +39,38 @@ public class Enemy : MonoBehaviour, IDamageable
     private void Start()
     {
         currentHealth = maxHealth;
+        // currently only checks on start pls fix
         target = GameObject.FindWithTag("Player").transform;
-    }
-
-    private void Update()
-    {
-        if (target)
-        {
-            Vector3 direction = (target.position - transform.position).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            if (angle > 30)
-            {
-                rb.rotation = 30;
-            }
-            else if (angle < -30)
-            {
-                rb.rotation = -30;
-            }
-            else
-            {
-                rb.rotation = angle;
-            }
-
-            moveDirection = direction;
-        }
     }
 
     private void FixedUpdate()
     {
         if (target)
         {
+            HandleMovement();
             rb.velocity = new Vector2(moveDirection.x, moveDirection.y) * moveSpeed;
         }
+    }
+
+    private void HandleMovement()
+    {
+        Vector3 direction = (target.position - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        if (angle > 30)
+        {
+            rb.rotation = 30;
+        }
+        else if (angle < -30)
+        {
+            rb.rotation = -30;
+        }
+        else
+        {
+            rb.rotation = angle;
+        }
+
+        moveDirection = direction;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -80,7 +79,7 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             DealDamage(collision);
         }
-        
+
         timeSinceDamageDealt = Time.time;
     }
 
@@ -98,9 +97,10 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             playerCollision ??= collision.gameObject.GetComponent<IDamageable>();
             playerCollision.Damage(damage);
-            timeSinceDamageDealt += 1;
+            timeSinceDamageDealt += damageInterval;
         }
     }
+
     public void Damage(float damageAmount)
     {
 
