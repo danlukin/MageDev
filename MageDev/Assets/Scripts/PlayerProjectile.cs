@@ -8,6 +8,7 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] private float destroyTime = 3f;
     [SerializeField] private float projSpeed;
     [SerializeField] private float projDamage;
+    [SerializeField] public float castRate;
     [SerializeField] private LayerMask destroysProj;
 
     public enum ProjectileType
@@ -48,10 +49,7 @@ public class PlayerProjectile : MonoBehaviour
         {
 
             IDamageable iDamageable = collision.gameObject.GetComponent<IDamageable>();
-            if (iDamageable != null)
-            {
-                iDamageable.Damage(projDamage);
-            }
+            iDamageable?.Damage(projDamage);
 
             Destroy(gameObject);
 
@@ -70,6 +68,7 @@ public class PlayerProjectile : MonoBehaviour
             SetStraightVelocity();
             projDamage = 1f;
             projSpeed = 10f;
+            castRate = 2f;
         }
     }
 

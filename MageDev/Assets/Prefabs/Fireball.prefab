@@ -164,6 +164,7 @@ MonoBehaviour:
   destroyTime: 3
   projSpeed: 10
   projDamage: 0
+  castRate: 1
   destroysProj:
     serializedVersion: 2
     m_Bits: 768

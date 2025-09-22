@@ -402,6 +402,7 @@
 "Assets/Scripts/PlayerController.cs"
 "Assets/Scripts/PlayerHealth.cs"
 "Assets/Scripts/PlayerProjectile.cs"
+"Assets/Scripts/PlayerTargetAndShoot.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 /deterministic

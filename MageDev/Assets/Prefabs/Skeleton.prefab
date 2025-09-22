@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6901653721306735913}
   m_Layer: 9
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,6 +102,9 @@ MonoBehaviour:
   maxHealth: 3
   damage: 1
   moveSpeed: 1
+  distanceToPlayer: 0
+  playerAggroDistance: 5
+  damageInterval: 0.5
 --- !u!61 &6419752954367363758
 BoxCollider2D:
   m_ObjectHideFlags: 0

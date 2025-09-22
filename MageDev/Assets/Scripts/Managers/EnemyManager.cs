@@ -8,9 +8,9 @@ public class EnemyManager : MonoBehaviour
 {
 
     private int activeEnemyCount = 0;
-    private GameObject enemyInstance;
     [SerializeField] private GameObject enemy;
     public static event Action<EnemyManager> DestroyEnemy;
+    public static event Action<EnemyManager> OnWaveCompleted;
 
     void Awake()
     {
@@ -28,7 +28,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (activeEnemyCount == 0)
         {
-            SpawnNewWave();
+            OnWaveCompleted?.Invoke(this);
         }
     }
 
@@ -49,7 +49,8 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnNewWave()
     {
-        for (int i = 0; i < 3; i++)
+        int spawnCount = StageManager.waveNumber + 5;
+        for (int i = 0; i < spawnCount; i++)
         {
             SpawnNewEnemy();
         }
@@ -59,7 +60,7 @@ public class EnemyManager : MonoBehaviour
     {
         var position = new Vector3(Random.Range(-9, 9), Random.Range(-9, 9));
         Quaternion noRotation = Quaternion.Euler(0, 0, 0);
-        enemyInstance = Instantiate(enemy, position, noRotation);
+        Instantiate(enemy, position, noRotation);
         ++activeEnemyCount;
     }
 
