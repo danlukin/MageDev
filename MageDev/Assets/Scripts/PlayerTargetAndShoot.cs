@@ -6,7 +6,7 @@ public class PlayerTargetAndShoot : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private GameObject weapon;
     [SerializeField] private Transform projectileSpawnPoint;
-    [SerializeField] private float castRange = 10f;
+    [SerializeField] private float castRange;
 
     private GameObject[] allTargets;
     private GameObject target;
@@ -21,6 +21,7 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private void Start()
     {
         castRate = projectile.GetComponent<PlayerProjectile>().castRate;
+        castRange = projectile.GetComponent<PlayerProjectile>().castRange;
     }
 
     private void FixedUpdate()
