@@ -47,6 +47,8 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         scale = transform.localScale;
         SetDifficulty();
+
+        maxHealth *= (float)Math.Pow(1.33f, StageManager.stageDifficulty);
         currentHealth = maxHealth;
         // currently only checks on start pls fix
         target = GameObject.FindWithTag("Player").transform;

@@ -1,35 +1,28 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    [SerializeField] private float xLimit = 7.5f;
+    [SerializeField] private float yLimit = 5f;
+    
     void Update()
     {
 
         float xPos = target.transform.position.x;
-        if (Math.Abs(xPos) > 7.5f)
+        if (Math.Abs(xPos) > xLimit)
             if (xPos < 0)
-                xPos = -7.5f;
+                xPos = -xLimit;
             else
-                xPos = 7.5f;
+                xPos = xLimit;
 
         float yPos = target.transform.position.y;
-        if (Math.Abs(yPos) > 5f)
+        if (Math.Abs(yPos) > yLimit)
             if (yPos < 0)
-                yPos = -5f;
+                yPos = -yLimit;
             else
-                yPos = 5f;
+                yPos = yLimit;
 
         transform.position = new Vector3(xPos, yPos, -10);
 

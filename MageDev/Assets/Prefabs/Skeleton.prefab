@@ -296,6 +296,8 @@ MonoBehaviour:
   currentHealth: 0
   damage: 1
   moveSpeed: 1
+  maxAngle: 15
+  difficulty: 0
   damageInterval: 0.5
 --- !u!61 &6419752954367363758
 BoxCollider2D:

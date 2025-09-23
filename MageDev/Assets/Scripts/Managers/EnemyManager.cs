@@ -49,9 +49,8 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnNewWave()
     {
-        int normalSpawn = StageManager.stageDifficulty + 3;
-        int eliteSpawn = StageManager.stageDifficulty / 2;
-        int bossSpawn = StageManager.stageDifficulty / 5;
+        int normalSpawn = (StageManager.stageDifficulty / 2) + 3;
+        int eliteSpawn = StageManager.stageDifficulty / 3;
 
         for (int i = 0; i < normalSpawn; i++)
         { SpawnNewEnemy(Difficulty.normal); }
