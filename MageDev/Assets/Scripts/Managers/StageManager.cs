@@ -10,6 +10,7 @@ public class StageManager : MonoBehaviour
     public static event Action<WaveState> OnWaveStateChanged;
     public Text WaveUI;
     public static int waveNumber;
+    public static int stageDifficulty = 0;
 
     [SerializeField] GameObject deathScreen;
 
@@ -94,15 +95,18 @@ public class StageManager : MonoBehaviour
         {
             case "increment":
                 ++waveNumber;
+                HandleStageDifficulty();
                 break;
             case "decrement":
                 --waveNumber;
+                HandleStageDifficulty();
                 break;
             case "reset":
                 waveNumber = 1;
+                stageDifficulty = 0;
                 break;
         }
-        
+
         UpdateWaveUI();
         waveChanged = true;
     }
@@ -110,6 +114,14 @@ public class StageManager : MonoBehaviour
     private void UpdateWaveUI()
     {
         WaveUI.text = "Wave " + waveNumber;
+    }
+
+    private void HandleStageDifficulty()
+    {
+        if (waveNumber % 2 == 0)
+        {
+            ++stageDifficulty;
+        }
     }
 
 }

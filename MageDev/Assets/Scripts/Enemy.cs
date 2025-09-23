@@ -2,18 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
     public static event Action<Enemy> OnEnemyKilled;
 
     [SerializeField] private float maxHealth = 3f;
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float maxAngle = 15;
+
+    public Difficulty difficulty = Difficulty.normal;
     private Rigidbody2D rb;
+    private FloatingHealthBar healthBar;
     private Transform target;
     private Vector2 moveDirection;
+    private Vector3 scale;
 
     // damage to player
     private IDamageable playerCollision;
@@ -23,6 +29,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        healthBar = GetComponentInChildren<FloatingHealthBar>();
         EnemyManager.DestroyEnemy += EnemyManagerDestroyEnemy;
     }
 
@@ -38,6 +45,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        scale = transform.localScale;
+        SetDifficulty();
         currentHealth = maxHealth;
         // currently only checks on start pls fix
         target = GameObject.FindWithTag("Player").transform;
@@ -52,18 +61,38 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
+    private void SetDifficulty()
+    {
+        switch (difficulty)
+        {
+            case Difficulty.normal:
+                break;
+            case Difficulty.elite:
+                maxHealth *= 2;
+                scale = new Vector3(scale.x * 1.5f, scale.y * 1.5f, scale.z * 1.5f);
+                transform.localScale = scale;
+                break;
+            case Difficulty.boss:
+                maxHealth *= 10;
+                damage *= 2;
+                scale = new Vector3(scale.x * 3, scale.y * 3, scale.z * 3);
+                transform.localScale = scale;
+                break;
+        }
+    }
+
     private void HandleMovement()
     {
         Vector3 direction = (target.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        if (angle > 30)
+        if (angle > maxAngle)
         {
-            rb.rotation = 30;
+            rb.rotation = maxAngle;
         }
-        else if (angle < -30)
+        else if (angle < -maxAngle)
         {
-            rb.rotation = -30;
+            rb.rotation = -maxAngle;
         }
         else
         {
@@ -105,6 +134,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
 
         currentHealth -= damageAmount;
+        healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
         {
@@ -123,4 +153,11 @@ public class Enemy : MonoBehaviour, IDamageable
             currentHealth = maxHealth;
         }
     }
+}
+
+public enum Difficulty
+{
+    normal,
+    elite,
+    boss
 }
