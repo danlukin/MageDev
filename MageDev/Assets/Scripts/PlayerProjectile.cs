@@ -66,9 +66,9 @@ public class PlayerProjectile : MonoBehaviour
         if (projectileType == ProjectileType.Fireball)
         {
             SetStraightVelocity();
-            projDamage = 1f;
+            projDamage = 3f;
             projSpeed = 10f;
-            castRate = 2f;
+            castRate = 0.5f;
         }
     }
 
