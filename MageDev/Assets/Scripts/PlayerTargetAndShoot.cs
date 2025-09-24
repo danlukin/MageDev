@@ -28,22 +28,26 @@ public class PlayerTargetAndShoot : MonoBehaviour
     {
         if (Time.time - timeSinceCast > castRate)
         {
-            allTargets = GameObject.FindGameObjectsWithTag("Enemy");
-            if (allTargets.Length > 0)
-            {
-                target = allTargets[0];
-                foreach (GameObject tempTarget in allTargets)
-                {
-                    if (Vector2.Distance(transform.position, tempTarget.transform.position) < Vector2.Distance(transform.position, target.transform.position))
-                    {
-                        target = tempTarget;
-                    }
-                }
+            HandleTargeting();
+        }
+    }
 
-                if (Vector2.Distance(transform.position, target.transform.position) < castRange)
+    private void HandleTargeting()
+    {
+        allTargets = GameObject.FindGameObjectsWithTag("Enemy");
+        if (allTargets.Length > 0)
+        {
+            target = allTargets[0];
+            foreach (GameObject tempTarget in allTargets)
+            {
+                if (Vector2.Distance(transform.position, tempTarget.transform.position) < Vector2.Distance(transform.position, target.transform.position))
                 {
-                    Cast(target);
+                    target = tempTarget;
                 }
+            }
+            if (Vector2.Distance(transform.position, target.transform.position) < castRange)
+            {
+                Cast(target);
             }
         }
     }

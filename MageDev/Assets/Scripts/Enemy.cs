@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour, IDamageable
 {
     public static event Action<Enemy> OnEnemyKilled;
 
-    [SerializeField] private float maxHealth = 3f;
+    [SerializeField] public float maxHealth = 3f;
     [SerializeField] private float currentHealth;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float moveSpeed = 2f;
@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private Transform target;
     private Vector2 moveDirection;
     private Vector3 scale;
+    private float spawnTime;
+    private float spawnImmuneTime = 0.1f;
 
     // damage to player
     private IDamageable playerCollision;
@@ -31,6 +33,7 @@ public class Enemy : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody2D>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         EnemyManager.DestroyEnemy += EnemyManagerDestroyEnemy;
+        spawnTime = Time.time;
     }
 
     void OnDestroy()
@@ -134,16 +137,19 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void Damage(float damageAmount)
     {
-
-        currentHealth -= damageAmount;
-        healthBar.UpdateHealthBar(currentHealth, maxHealth);
-
-        if (currentHealth <= 0)
+        if (Time.time - spawnTime > spawnImmuneTime)
         {
-            Destroy(gameObject);
-            OnEnemyKilled?.Invoke(this);
-        }
+            if (currentHealth - damageAmount < 0) {currentHealth = 0;}
+            else {currentHealth -= damageAmount;}
+        
+            healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
+            if (currentHealth <= 0)
+            {
+                Destroy(gameObject);
+                OnEnemyKilled?.Invoke(this);
+            }
+        }
     }
 
     public void Heal(float healAmount)

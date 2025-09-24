@@ -13,6 +13,7 @@ public class StageManager : MonoBehaviour
     public static int stageDifficulty = 0;
 
     [SerializeField] GameObject deathScreen;
+    [SerializeField] GameObject winScreen;
 
     private bool waveChanged = false;
 
@@ -58,14 +59,19 @@ public class StageManager : MonoBehaviour
         waveState = newState;
 
         deathScreen.SetActive(newState == WaveState.Dead);
+        winScreen.SetActive(newState == WaveState.StageComplete);
 
         switch (newState)
         {
             case WaveState.WaveComplete:
                 if (!waveChanged)
                 {
-                    UpdateWaveNumber("increment");
-                    UpdateWaveState(WaveState.WaveStart);
+                    if (CheckForWin()) { UpdateWaveState(WaveState.StageComplete); }
+                    else
+                    {
+                        UpdateWaveNumber("increment");
+                        UpdateWaveState(WaveState.WaveStart);
+                    }
                 }
                 break;
             case WaveState.Dead:
@@ -73,6 +79,8 @@ public class StageManager : MonoBehaviour
                 break;
             case WaveState.WaveStart:
                 waveChanged = false;
+                break;
+            case WaveState.StageComplete:
                 break;
         }
 
@@ -95,6 +103,7 @@ public class StageManager : MonoBehaviour
         {
             case "increment":
                 ++waveNumber;
+                CheckForWin();
                 HandleStageDifficulty();
                 break;
             case "decrement":
@@ -109,6 +118,11 @@ public class StageManager : MonoBehaviour
 
         UpdateWaveUI();
         waveChanged = true;
+    }
+
+    private bool CheckForWin()
+    {
+        return waveNumber == 20;
     }
 
     private void UpdateWaveUI()
@@ -130,5 +144,6 @@ public enum WaveState
 {
     WaveStart,
     Dead,
-    WaveComplete
+    WaveComplete,
+    StageComplete
 }

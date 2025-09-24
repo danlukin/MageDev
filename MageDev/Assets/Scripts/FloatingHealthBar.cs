@@ -10,7 +10,7 @@ public class FloatingHealthBar : MonoBehaviour
     private new Camera camera;
     private CanvasGroup visibility;
 
-    void Start()
+    void Awake()
     {
         camera = Camera.main;
         slider = GetComponent<Slider>();

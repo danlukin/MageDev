@@ -11,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Enemy enemy;
     public static event Action<EnemyManager> DestroyEnemy;
     public static event Action<EnemyManager> OnWaveCompleted;
+    private WaveState waveState;
 
     void Awake()
     {
@@ -26,7 +27,7 @@ public class EnemyManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (activeEnemyCount == 0)
+        if (activeEnemyCount == 0 & waveState != WaveState.Dead)
         {
             OnWaveCompleted?.Invoke(this);
         }
@@ -34,6 +35,8 @@ public class EnemyManager : MonoBehaviour
 
     private void StageManagerOnWaveStateChanged(WaveState state)
     {
+        waveState = state;
+
         switch (state)
         {
             case WaveState.WaveStart:
@@ -43,6 +46,7 @@ public class EnemyManager : MonoBehaviour
                 }
             case WaveState.Dead:
                 DestroyEnemy?.Invoke(this);
+                activeEnemyCount = 0;
                 break;
         }
     }
