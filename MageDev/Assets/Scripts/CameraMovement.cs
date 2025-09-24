@@ -4,8 +4,8 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    [SerializeField] private float xLimit = 7.5f;
-    [SerializeField] private float yLimit = 5f;
+    [SerializeField] private float xLimit;
+    [SerializeField] private float yLimit;
     
     void Update()
     {

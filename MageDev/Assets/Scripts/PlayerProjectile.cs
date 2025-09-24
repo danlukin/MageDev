@@ -47,24 +47,18 @@ public class PlayerProjectile : MonoBehaviour
                 switch (projectileType)
                 {
                     case ProjectileType.Basic:
-                        HandleBasicCollision(collision);
+                        HandleCollision(collision);
+                        Destroy(gameObject);
                         break;
                     case ProjectileType.Ultimate:
-                        HandleUltimateCollision(collision);
+                        HandleCollision(collision);
                         break;
                 }
             }
         }
     }
 
-    private void HandleBasicCollision(Collider2D collision)
-    {
-        IDamageable iDamageable = collision.gameObject.GetComponent<IDamageable>();
-        iDamageable?.Damage(projDamage);
-        Destroy(gameObject);
-    }
-
-    private void HandleUltimateCollision(Collider2D collision)
+    private void HandleCollision(Collider2D collision)
     {
         IDamageable iDamageable = collision.gameObject.GetComponent<IDamageable>();
         iDamageable?.Damage(projDamage);
