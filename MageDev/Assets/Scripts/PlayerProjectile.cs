@@ -10,9 +10,12 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] public float projDamage;
     [SerializeField] public float castRate;
     [SerializeField] public float castRange = 8f;
+    [SerializeField] public float statusChance = 0.1f;
     public bool collisionEnabled = true;
 
     [SerializeField] private LayerMask destroysProj;
+    [SerializeField] private LayerMask effects;
+    [SerializeField] public StatusEffectData data;
 
     public enum ProjectileType
     {
@@ -42,16 +45,19 @@ public class PlayerProjectile : MonoBehaviour
     {
         if (collisionEnabled)
         {
+            // change to be more clear
             if ((destroysProj.value & (1 << collision.gameObject.layer)) > 0)
             {
                 switch (projectileType)
                 {
                     case ProjectileType.Basic:
                         HandleCollision(collision);
+                        if (Random.value <= statusChance) HandleEffect(collision);
                         Destroy(gameObject);
                         break;
                     case ProjectileType.Ultimate:
                         HandleCollision(collision);
+                        if (effects.value > 0) HandleEffect(collision);
                         break;
                 }
             }
@@ -62,6 +68,12 @@ public class PlayerProjectile : MonoBehaviour
     {
         IDamageable iDamageable = collision.gameObject.GetComponent<IDamageable>();
         iDamageable?.Damage(projDamage);
+    }
+
+    private void HandleEffect(Collider2D collision)
+    {
+        IEffectable iEffectable = collision.gameObject.GetComponent<IEffectable>();
+        iEffectable?.ApplyEffect(data);
     }
 
     private void SetStraightVelocity()

@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if (state == WaveState.WaveStart)
         {
-            currentHealth = maxHealth;
+            Heal(maxHealth);
         }
     }
 }
