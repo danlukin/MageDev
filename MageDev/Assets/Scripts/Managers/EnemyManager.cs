@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class EnemyManager : MonoBehaviour
 {
 
-    private int activeEnemyCount = 0;
+    [SerializeField] private int activeEnemyCount = 0;
     [SerializeField] private Enemy enemy;
     public static event Action<EnemyManager> DestroyEnemy;
     public static event Action<EnemyManager> OnWaveCompleted;

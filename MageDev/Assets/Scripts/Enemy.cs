@@ -4,7 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour, IDamageable
+public enum Difficulty
+{
+    normal,
+    elite,
+    boss
+}
+
+public class Enemy : MonoBehaviour, IDamageable, IEffectable
 {
     public static event Action<Enemy> OnEnemyKilled;
 
@@ -22,6 +29,7 @@ public class Enemy : MonoBehaviour, IDamageable
     private Vector3 scale;
     private float spawnTime;
     private float spawnImmuneTime = 0.1f;
+    private StatusEffectData data;
 
     // damage to player
     private IDamageable playerCollision;
@@ -59,6 +67,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
+        if (data) HandleEffect();
+
         if (target)
         {
             HandleMovement();
@@ -139,13 +149,13 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (Time.time - spawnTime > spawnImmuneTime)
         {
-            if (currentHealth - damageAmount < 0) {currentHealth = 0;}
-            else {currentHealth -= damageAmount;}
-        
+            currentHealth -= damageAmount;
+
             healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
             if (currentHealth <= 0)
             {
+                RemoveEffect();
                 Destroy(gameObject);
                 OnEnemyKilled?.Invoke(this);
             }
@@ -161,11 +171,48 @@ public class Enemy : MonoBehaviour, IDamageable
             currentHealth = maxHealth;
         }
     }
+
+    [SerializeField] private float currentEffectTime;
+    private float nextTickTime;
+
+    public void ApplyEffect(StatusEffectData _data)
+    {
+        if (data)
+        {
+            currentEffectTime = nextTickTime - currentEffectTime;
+            if (currentEffectTime < 0) currentEffectTime = -currentEffectTime;
+            nextTickTime = 0;
+        }
+
+        data = _data;
+    }
+
+    public void HandleEffect()
+    {
+        currentEffectTime += Time.deltaTime;
+
+        if (currentEffectTime >= data.Duration) RemoveEffect();
+
+        if (!data) return;
+
+        if (data.HOTAmount > 0 && currentEffectTime >= nextTickTime)
+        {
+            nextTickTime += data.tickRate;
+            Heal(data.HOTAmount);
+        }
+
+        if (data.DOTAmount > 0 && currentEffectTime >= nextTickTime)
+        {
+            nextTickTime += data.tickRate;
+            Damage(data.DOTAmount);
+        }
+    }
+
+    public void RemoveEffect()
+    {
+        data = null;
+        currentEffectTime = 0;
+        nextTickTime = 0;
+    }
 }
 
-public enum Difficulty
-{
-    normal,
-    elite,
-    boss
-}
