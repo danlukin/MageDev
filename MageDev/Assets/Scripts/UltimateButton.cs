@@ -48,7 +48,7 @@ public class UltimateButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
             spellInstance = Instantiate(spell, projectileSpawnPoint.position, Quaternion.LookRotation(direction));
             spellInstance.transform.right = direction;
             spellInstance.GetComponent<PlayerProjectile>().transform.localScale = scale;
-            spellInstance.GetComponent<PlayerProjectile>().projDamage *= chargeMultiplier * 0.2f;
+            spellInstance.GetComponent<PlayerProjectile>().baseDamage *= chargeMultiplier * 0.2f;
 
             chargeMultiplier = 1;
             timeSinceCast = Time.time;

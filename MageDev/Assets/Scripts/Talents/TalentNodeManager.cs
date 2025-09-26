@@ -14,13 +14,13 @@ public class TalentNodeManager : MonoBehaviour
     private void OnEnable()
     {
         TalentNode.OnTalentPointSpent += HandleTalentPointSpent;
-        TalentNode.OnNodeAllocated += HandleNodeAllocated;
+        TalentNode.OnUnlockNext += HandleUnlockNext;
     }
 
     private void OnDisable()
     {
         TalentNode.OnTalentPointSpent -= HandleTalentPointSpent;
-        TalentNode.OnNodeAllocated -= HandleNodeAllocated;
+        TalentNode.OnUnlockNext -= HandleUnlockNext;
     }
 
     void Start()
@@ -51,13 +51,13 @@ public class TalentNodeManager : MonoBehaviour
         }
     }
     
-    private void HandleNodeAllocated(TalentNode node)
+    private void HandleUnlockNext(TalentNode _node)
     {
-        foreach (TalentNode talent in talentNodes)
+        foreach (TalentNode node in talentNodes)
         {
-            if (!talent.isUnlocked && talent.CanUnlockTalent())
+            if (!node.isUnlocked && node.CanUnlockTalent())
             {
-                talent.UnlockTalent();
+                node.UnlockTalent();
             }
         }
     }

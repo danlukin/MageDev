@@ -11,14 +11,14 @@ public class TalentNode : MonoBehaviour
     public List<TalentNode> prerequisites;
 
     public int currentRank;
-    public bool isUnlocked;
+    public bool isUnlocked = false;
 
     public Image talentIcon;
     public TMP_Text talentRankText;
     public Button talentButton;
 
     public static event Action<TalentNode> OnTalentPointSpent;
-    public static event Action<TalentNode> OnNodeAllocated;
+    public static event Action<TalentNode> OnUnlockNext;
 
     private void OnValidate()
     {
@@ -49,9 +49,20 @@ public class TalentNode : MonoBehaviour
         {
             ++currentRank;
             OnTalentPointSpent?.Invoke(this);
-            OnNodeAllocated?.Invoke(this);
+            if (currentRank == 1) OnUnlockNext?.Invoke(this);
             UpdateUI();
         }
+    }
+
+    public bool CanUnlockTalent()
+    {
+        int minUnlockRank = 1;
+        foreach (TalentNode node in prerequisites)
+        {
+            if (!node.isUnlocked || node.currentRank < minUnlockRank) return false;
+        }
+
+        return true;
     }
 
     public void UnlockTalent()
@@ -59,16 +70,4 @@ public class TalentNode : MonoBehaviour
         isUnlocked = true;
         UpdateUI();
     }
-
-    public bool CanUnlockTalent()
-    {
-        foreach (TalentNode node in prerequisites)
-        {
-            if (node.isUnlocked) return false;
-        }
-
-        Debug.Log(prerequisites);
-        return true;
-    }
-
 }

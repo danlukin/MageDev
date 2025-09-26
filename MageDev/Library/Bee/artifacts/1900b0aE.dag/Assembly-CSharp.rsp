@@ -406,10 +406,11 @@
 "Assets/Scripts/StatusEffect/IEffectable.cs"
 "Assets/Scripts/StatusEffect/StatusEffectData.cs"
 "Assets/Scripts/Talents/TalentData.cs"
+"Assets/Scripts/Talents/TalentManager.cs"
 "Assets/Scripts/Talents/TalentNode.cs"
 "Assets/Scripts/Talents/TalentNodeManager.cs"
+"Assets/Scripts/ToggleMenu.cs"
 "Assets/Scripts/UltimateButton.cs"
-"Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 /deterministic
 /optimize+
