@@ -15,12 +15,14 @@ public class TalentNodeManager : MonoBehaviour
     {
         TalentNode.OnTalentPointSpent += HandleTalentPointSpent;
         TalentNode.OnUnlockNext += HandleUnlockNext;
+        PlayerExperience.OnLevelUp += HandleLevelUp;
     }
 
     private void OnDisable()
     {
         TalentNode.OnTalentPointSpent -= HandleTalentPointSpent;
         TalentNode.OnUnlockNext -= HandleUnlockNext;
+        PlayerExperience.OnLevelUp -= HandleLevelUp;
     }
 
     void Start()
@@ -50,7 +52,7 @@ public class TalentNodeManager : MonoBehaviour
             UpdateTalentPoints(-1);
         }
     }
-    
+
     private void HandleUnlockNext(TalentNode _node)
     {
         foreach (TalentNode node in talentNodes)
@@ -60,5 +62,10 @@ public class TalentNodeManager : MonoBehaviour
                 node.UnlockTalent();
             }
         }
+    }
+    
+    private void HandleLevelUp(PlayerExperience experience)
+    {
+        UpdateTalentPoints(1);
     }
 }

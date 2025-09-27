@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.0000009536743, y: 0.00000011920929}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 1.5, y: 1.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8977652144173982840
 Canvas:
@@ -323,8 +323,8 @@ RectTransform:
   - {fileID: 4530255229970242225}
   m_Father: {fileID: 6885661662440803069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -391,8 +391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9938b14c4530046a3b75a2f2d1ebd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 9111913720551703454}
-  offset: {x: 0.1, y: 0.6, z: 0}
 --- !u!225 &6062472048589246150
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -505,11 +503,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0080aef023a1d644a349da786bac661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 3
   currentHealth: 0
   damage: 2
   moveSpeed: 1
+  maxAngle: 15
+  difficulty: 0
   damageInterval: 0.5
+  currentEffectTime: 0
 --- !u!61 &8312392177237992531
 BoxCollider2D:
   m_ObjectHideFlags: 0
