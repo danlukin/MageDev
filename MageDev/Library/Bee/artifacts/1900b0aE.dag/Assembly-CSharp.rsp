@@ -405,15 +405,16 @@
 "Assets/Scripts/Player/PlayerExperience.cs"
 "Assets/Scripts/Player/PlayerHealth.cs"
 "Assets/Scripts/Player/PlayerProjectile.cs"
+"Assets/Scripts/Player/PlayerSpell.cs"
 "Assets/Scripts/Player/PlayerTargetAndShoot.cs"
 "Assets/Scripts/StatusEffect/IEffectable.cs"
 "Assets/Scripts/StatusEffect/StatusEffectData.cs"
+"Assets/Scripts/SuperButton.cs"
 "Assets/Scripts/Talents/TalentData.cs"
 "Assets/Scripts/Talents/TalentManager.cs"
 "Assets/Scripts/Talents/TalentNode.cs"
 "Assets/Scripts/Talents/TalentNodeManager.cs"
 "Assets/Scripts/ToggleMenu.cs"
-"Assets/Scripts/UltimateButton.cs"
 -langversion:9.0
 /deterministic
 /optimize+
