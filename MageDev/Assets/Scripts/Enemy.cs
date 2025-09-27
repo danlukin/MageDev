@@ -155,11 +155,16 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
             if (currentHealth <= 0)
             {
-                RemoveEffect();
-                Destroy(gameObject);
-                OnEnemyKilled?.Invoke(this);
+                HandleOnDeath();
             }
         }
+    }
+
+    private void HandleOnDeath()
+    {
+        RemoveEffect();
+        OnEnemyKilled?.Invoke(this);
+        Destroy(gameObject);
     }
 
     public void Heal(float healAmount)

@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyTime: 3
   projSpeed: 10
-  projDamage: 3
+  baseDamage: 3
   castRate: 1
   castRange: 8
   statusChance: 0.1

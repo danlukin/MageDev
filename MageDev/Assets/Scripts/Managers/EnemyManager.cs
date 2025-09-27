@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,15 +9,24 @@ public class EnemyManager : MonoBehaviour
 {
 
     [SerializeField] private int activeEnemyCount = 0;
-    [SerializeField] private Enemy enemy;
+    [SerializeField] private Enemy[] enemies;
+    [SerializeField] private ExpGem expGem;
     public static event Action<EnemyManager> DestroyEnemy;
     public static event Action<EnemyManager> OnWaveCompleted;
     private WaveState waveState;
+
+    //enemies
+    private Enemy normalEnemy;
+    private Enemy eliteEnemy;
+    private Enemy bossEnemy;
+
 
     void Awake()
     {
         StageManager.OnWaveStateChanged += StageManagerOnWaveStateChanged;
         Enemy.OnEnemyKilled += EnemyOnKilled;
+
+        InstantializeEnemies();
     }
 
     void OnDestroy()
@@ -31,6 +41,16 @@ public class EnemyManager : MonoBehaviour
         {
             OnWaveCompleted?.Invoke(this);
         }
+    }
+
+    private void InstantializeEnemies()
+    {
+        normalEnemy = enemies[0];
+        normalEnemy.difficulty = Difficulty.normal;
+        eliteEnemy = enemies[1];
+        eliteEnemy.difficulty = Difficulty.elite;
+        bossEnemy = enemies[2];
+        bossEnemy.difficulty = Difficulty.boss;
     }
 
     private void StageManagerOnWaveStateChanged(WaveState state)
@@ -57,26 +77,31 @@ public class EnemyManager : MonoBehaviour
         int eliteSpawn = StageManager.stageDifficulty / 3;
 
         for (int i = 0; i < normalSpawn; i++)
-        { SpawnNewEnemy(Difficulty.normal); }
+        { SpawnNewEnemy(normalEnemy); }
 
         for (int i = 0; i < eliteSpawn; i++)
-        { SpawnNewEnemy(Difficulty.elite); }
+        { SpawnNewEnemy(eliteEnemy); }
 
         if (StageManager.waveNumber % 10 == 0)
-        { SpawnNewEnemy(Difficulty.boss); }
+        { SpawnNewEnemy(bossEnemy); }
     }
 
-    private void SpawnNewEnemy(Difficulty difficulty)
+    private void SpawnNewEnemy(Enemy enemy)
     {
         var position = new Vector3(Random.Range(-9, 9), Random.Range(-9, 9));
         Quaternion noRotation = Quaternion.Euler(0, 0, 0);
-        Enemy spawnedEnemy = Instantiate(enemy, position, noRotation);
-        spawnedEnemy.difficulty = difficulty;
+        Instantiate(enemy, position, noRotation);
         ++activeEnemyCount;
     }
 
-        private void EnemyOnKilled(Enemy enemy)
+    private void DropExperienceGem(Vector3 position)
     {
+        var gem = Instantiate(expGem, position, Quaternion.identity);
+    }
+
+    private void EnemyOnKilled(Enemy enemy)
+    {
+        expGem.SpawnExperienceGem(enemy);
         --activeEnemyCount;
     }
 }
