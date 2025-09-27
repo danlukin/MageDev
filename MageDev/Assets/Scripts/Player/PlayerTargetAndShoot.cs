@@ -3,9 +3,9 @@ using UnityEngine;
 public class PlayerTargetAndShoot : MonoBehaviour
 {
 
-    [SerializeField] private GameObject projectile;
+    [SerializeField] private GameObject spell;
     [SerializeField] private GameObject weapon;
-    [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private Transform spawnPoint;
     [SerializeField] private float castRange;
 
     private GameObject[] allTargets;
@@ -14,19 +14,18 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private Vector2 weaponPosition;
     private Vector2 direction;
 
-    private float castRate;
+    private float castSpeed;
     private float timeSinceCast;
-    private GameObject projectileIntance;
 
     private void Start()
     {
-        castRate = projectile.GetComponent<PlayerProjectile>().castRate;
-        castRange = projectile.GetComponent<PlayerProjectile>().castRange;
+        castSpeed = spell.GetComponent<PlayerSpell>().castSpeed;
+        castRange = spell.GetComponent<PlayerSpell>().castRange;
     }
 
     private void FixedUpdate()
     {
-        if (Time.time - timeSinceCast > castRate)
+        if (Time.time - timeSinceCast > castSpeed)
         {
             HandleTargeting();
         }
@@ -63,7 +62,7 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private void Cast(GameObject target)
     {
         HandleWeaponRotation(target);
-        projectileIntance = Instantiate(projectile, projectileSpawnPoint.position, weapon.transform.rotation);
+        Instantiate(spell, spawnPoint.position, weapon.transform.rotation);
         timeSinceCast = Time.time;
     }
     

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c070d9219f16654293a59c8a3beb4c4, type: 3}
   m_Name: FireSuper3
   m_EditorClassIdentifier: 
-  talentName: Super Slow
+  talentName: Super Max Charge
   maxRank: 1
   talentIcon: {fileID: 21300000, guid: 778656d3f0d7dd64c808d8f9b4f843fb, type: 3}
