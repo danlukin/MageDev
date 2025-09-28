@@ -1,9 +1,11 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerTargetAndShoot : MonoBehaviour
 {
 
-    [SerializeField] private GameObject spell;
+    [SerializeField] private GameObject spellObject;
     [SerializeField] private GameObject weapon;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float castRange;
@@ -19,8 +21,8 @@ public class PlayerTargetAndShoot : MonoBehaviour
 
     private void Start()
     {
-        castSpeed = spell.GetComponent<PlayerSpell>().castSpeed;
-        castRange = spell.GetComponent<PlayerSpell>().castRange;
+        castSpeed = PlayerSpellManager.basicSpell.castSpeed;
+        castRange = PlayerSpellManager.basicSpell.castRange;
     }
 
     private void FixedUpdate()
@@ -62,7 +64,7 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private void Cast(GameObject target)
     {
         HandleWeaponRotation(target);
-        Instantiate(spell, spawnPoint.position, weapon.transform.rotation);
+        Instantiate(spellObject, spawnPoint.position, weapon.transform.rotation);
         timeSinceCast = Time.time;
     }
     

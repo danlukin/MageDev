@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TalentManager : MonoBehaviour
 {
-    [SerializeField] private PlayerSpell basic;
+    private PlayerSpellStats basic;
     [SerializeField] private PlayerProjectile super;
     [SerializeField] private StatusEffectData status;
 
@@ -22,6 +22,7 @@ public class TalentManager : MonoBehaviour
     private void HandleTalentPointSpent(TalentNode node)
     {
         string talentName = node.talentData.talentName;
+        basic = PlayerSpellManager.basicSpell;
 
         switch (talentName)
         {
@@ -30,10 +31,8 @@ public class TalentManager : MonoBehaviour
                 basic.UpdateDamage();
                 break;
             case "Basic Status Chance":
-                basic.statusChance += 0.1f;
                 break;
             case "Basic Range":
-                basic.castRange += 2;
                 break;
             case "Super Damage":
                 break;

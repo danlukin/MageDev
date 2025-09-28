@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 115762483}
   - component: {fileID: 115762484}
   - component: {fileID: 115762485}
+  - component: {fileID: 115762486}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -325,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f462f7ac77e80d54fb0ac3d4a713de7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spell: {fileID: 6603238088628718874, guid: 666807b0f66331241994436f9131534f, type: 3}
+  spellObject: {fileID: 6603238088628718874, guid: 666807b0f66331241994436f9131534f, type: 3}
   weapon: {fileID: 1507086346}
   spawnPoint: {fileID: 1993262172}
   castRange: 8
@@ -343,6 +344,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lvlText: {fileID: 2067090469}
   expBar: {fileID: 1510809642}
+--- !u!114 &115762486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115762476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8158891ef569040aa77ee764b6ce93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicSpellData: {fileID: 11400000, guid: 2c19178da38424841a02e7fb05fe7fd6, type: 2}
+  superSpellData: {fileID: 11400000, guid: c8eb58c3b9c23344e9bc83c9b7939203, type: 2}
+  statusData: {fileID: 11400000, guid: 5d59115087a10924d88446d029c3ddd4, type: 2}
 --- !u!1001 &177704635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3865,7 +3881,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9127e08ad7e2848ac13b0663d72d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basic: {fileID: 8260597538435833569, guid: 666807b0f66331241994436f9131534f, type: 3}
   super: {fileID: 9009581460417510144, guid: 671bb4f513aafd4478792b8bc461fe67, type: 3}
   status: {fileID: 11400000, guid: 5d59115087a10924d88446d029c3ddd4, type: 2}
 --- !u!1 &1593060547
@@ -4562,7 +4577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pressed: 0
-  spell: {fileID: 2637107739299473061, guid: eb497e39e1898a042a18456c5aca89db, type: 3}
+  spellObject: {fileID: 2637107739299473061, guid: eb497e39e1898a042a18456c5aca89db, type: 3}
   spellSprite: {fileID: 7675949972452298769, guid: fbaf6a2a9e7b33d46aed5f1e185a3f09, type: 3}
   weapon: {fileID: 1507086346}
   projectileSpawnPoint: {fileID: 1993262172}
