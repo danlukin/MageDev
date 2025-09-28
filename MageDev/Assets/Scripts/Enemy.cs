@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
     private Vector3 scale;
     private float spawnTime;
     private float spawnImmuneTime = 0.1f;
-    private StatusEffectData data;
+    private StatusEffect status;
 
     // damage to player
     private IDamageable playerCollision;
@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
     private void FixedUpdate()
     {
-        if (data) HandleEffect();
+        if (status != null) HandleEffect();
 
         if (target)
         {
@@ -180,42 +180,42 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
     [SerializeField] private float currentEffectTime;
     private float nextTickTime;
 
-    public void ApplyEffect(StatusEffectData _data)
+    public void ApplyEffect(StatusEffect _status)
     {
-        if (data)
+        if (status != null)
         {
             currentEffectTime = nextTickTime - currentEffectTime;
             if (currentEffectTime < 0) currentEffectTime = -currentEffectTime;
             nextTickTime = 0;
         }
 
-        data = _data;
+        status = _status;
     }
 
     public void HandleEffect()
     {
         currentEffectTime += Time.deltaTime;
 
-        if (currentEffectTime >= data.Duration) RemoveEffect();
+        if (currentEffectTime >= status.duration) RemoveEffect();
 
-        if (!data) return;
+        if (status == null) return;
 
-        if (data.HOTAmount > 0 && currentEffectTime >= nextTickTime)
+        if (status.HOTAmount > 0 && currentEffectTime >= nextTickTime)
         {
-            nextTickTime += data.tickRate;
-            Heal(data.HOTAmount);
+            nextTickTime += status.tickRate;
+            Heal(status.HOTAmount);
         }
 
-        if (data.DOTAmount > 0 && currentEffectTime >= nextTickTime)
+        if (status.DOTAmount > 0 && currentEffectTime >= nextTickTime)
         {
-            nextTickTime += data.tickRate;
-            Damage(data.DOTAmount);
+            nextTickTime += status.tickRate;
+            Damage(status.DOTAmount);
         }
     }
 
     public void RemoveEffect()
     {
-        data = null;
+        status = null;
         currentEffectTime = 0;
         nextTickTime = 0;
     }

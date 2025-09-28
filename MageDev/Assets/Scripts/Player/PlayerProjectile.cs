@@ -75,7 +75,7 @@ public class PlayerProjectile : MonoBehaviour
     private void HandleEffect(Collider2D collision)
     {
         IEffectable iEffectable = collision.gameObject.GetComponent<IEffectable>();
-        iEffectable?.ApplyEffect(data);
+        //iEffectable?.ApplyEffect(data);
     }
 
     private void SetStraightVelocity()

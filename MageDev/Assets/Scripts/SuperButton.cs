@@ -8,10 +8,11 @@ using UnityEngine.EventSystems;
 public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public bool Pressed;
-    [SerializeField] private GameObject spell;
+    [SerializeField] private GameObject spellObject;
     [SerializeField] private GameObject spellSprite;
     [SerializeField] private GameObject weapon;
     [SerializeField] private Transform projectileSpawnPoint;
+
     private GameObject[] allTargets;
     private GameObject target;
     private GameObject spellInstance;
@@ -45,13 +46,11 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             Pressed = false;
             Destroy(spellInstance);
-            spellInstance = Instantiate(spell, projectileSpawnPoint.position, Quaternion.LookRotation(direction));
+            spellInstance = Instantiate(spellObject, projectileSpawnPoint.position, Quaternion.LookRotation(direction));
             spellInstance.transform.right = direction;
             
-            PlayerSpell spellInstanceComponent = spellInstance.GetComponent<PlayerSpell>();
-            spellInstanceComponent.transform.localScale = scale;
-            spellInstanceComponent.damageMultiplier *= chargeMultiplier * 0.2f;
-            spellInstanceComponent.UpdateDamage();
+            spellInstance.transform.localScale = scale;
+            PlayerSpellManager.SetChargeMultiplier(chargeMultiplier * 0.2f);
 
             chargeMultiplier = 1;
             timeSinceCast = Time.time;
@@ -62,7 +61,7 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void FixedUpdate()
     {
-        if (Time.time - timeSinceCast > spell.GetComponent<PlayerSpell>().castSpeed)
+        if (Time.time - timeSinceCast > PlayerSpellManager.superSpell.castSpeed)
         {
             offCooldown = true;
         }
