@@ -19,6 +19,16 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private float castSpeed;
     private float timeSinceCast;
 
+    private void OnEnable()
+    {
+        PlayerSpellManager.OnCastRangeUpdated += HandleCastRangeUpdate;
+    }
+
+    private void OnDisable()
+    {
+        PlayerSpellManager.OnCastRangeUpdated -= HandleCastRangeUpdate;
+    }
+
     private void Start()
     {
         castSpeed = PlayerSpellManager.basicSpell.castSpeed;
@@ -67,7 +77,12 @@ public class PlayerTargetAndShoot : MonoBehaviour
         Instantiate(spellObject, spawnPoint.position, weapon.transform.rotation);
         timeSinceCast = Time.time;
     }
-    
+
+    private void HandleCastRangeUpdate(PlayerSpellStats stats)
+    {
+        castRange = stats.castRange;
+    }
+
 }
 
 

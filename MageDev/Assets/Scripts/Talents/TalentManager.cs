@@ -6,8 +6,8 @@ using UnityEngine;
 public class TalentManager : MonoBehaviour
 {
     private PlayerSpellStats basic;
-    [SerializeField] private PlayerProjectile super;
-    [SerializeField] private StatusEffectData status;
+    private PlayerSpellStats super;
+    private StatusEffect status;
 
     private void OnEnable()
     {
@@ -23,6 +23,8 @@ public class TalentManager : MonoBehaviour
     {
         string talentName = node.talentData.talentName;
         basic = PlayerSpellManager.basicSpell;
+        super = PlayerSpellManager.superSpell;
+        status = PlayerSpellManager.status;
 
         switch (talentName)
         {
@@ -31,20 +33,30 @@ public class TalentManager : MonoBehaviour
                 basic.UpdateDamage();
                 break;
             case "Basic Status Chance":
+                basic.statusChance += 0.1f;
                 break;
             case "Basic Range":
+                PlayerSpellManager.HandleCastRangeUpdate(basic, '*', 2);
                 break;
             case "Super Damage":
+                super.baseDamage += 1;
+                super.UpdateDamage();
                 break;
-            case "Super Area":
+            case "Super Speed":
+                super.projSpeed += 0.5f;
                 break;
             case "Super Max Charge":
+                super.maxChargeStacks += 10;
                 break;
             case "Status Damage":
+                status.DOTAmount += 1;
                 break;
             case "Status Duration":
+                status.duration += 1;
                 break;
-            case "Status Self Immolation":
+            case "Status Faster Damage":
+                status.tickRate *= 0.66f;
+                status.duration *= 0.66f;
                 break;
             default:
                 Debug.LogWarning("Unknown talent: " + talentName);

@@ -34,10 +34,7 @@ public class PlayerSpell : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (spell.spellType == SpellType.Super & FindObjectOfType<PlayerSpellManager>())
-        {
-            PlayerSpellManager.SetChargeMultiplier(1);
-        }
+        HandleResetChargeMultiplier();
     }
 
     private void SetSpellStats()
@@ -99,5 +96,13 @@ public class PlayerSpell : MonoBehaviour
     private void SetStraightVelocity()
     {
         rb.velocity = transform.right * spell.projSpeed;
+    }
+
+    private void HandleResetChargeMultiplier()
+    {
+        if (spell.spellType == SpellType.Super & FindObjectOfType<PlayerSpellManager>())
+        {
+            PlayerSpellManager.SetChargeMultiplier(spell, 1);
+        }
     }
 }

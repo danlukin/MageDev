@@ -11,6 +11,7 @@ public enum SpellType
 [CreateAssetMenu(fileName = "NewSpell", menuName = "Spell")]
 public class PlayerSpellData : ScriptableObject
 {
+    [Header("Generic Values")]
     public string Name;
     public Sprite Sprite;
     public SpellType spellType;
@@ -19,4 +20,7 @@ public class PlayerSpellData : ScriptableObject
     public float castSpeed;
     public float castRange;
     public float statusChance;
+    
+    [Header("Super Values")]
+    public int maxChargeStacks = 1;
 }

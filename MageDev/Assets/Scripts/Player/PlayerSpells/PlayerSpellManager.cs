@@ -11,11 +11,13 @@ public class PlayerSpellStats
     public float damage;
     public float baseDamage;
     public float damageMultiplier = 1;
-    public float chargeMultiplier = 1;
     public float projSpeed;
     public float castSpeed;
     public float castRange;
     public float statusChance;
+
+    public int maxChargeStacks;
+    public float chargeMultiplier = 1;
 
     public void UpdateDamage()
     {
@@ -42,6 +44,8 @@ public class PlayerSpellManager : MonoBehaviour
     public static PlayerSpellStats superSpell = new PlayerSpellStats { };
     public static StatusEffect status = new StatusEffect { };
 
+    public static event Action<PlayerSpellStats> OnCastRangeUpdated;
+
     private void Awake()
     {
         InitSpell(basicSpell, basicSpellData);
@@ -60,6 +64,7 @@ public class PlayerSpellManager : MonoBehaviour
         spell.castSpeed = data.castSpeed;
         spell.castRange = data.castRange;
         spell.statusChance = data.statusChance;
+        spell.maxChargeStacks = data.maxChargeStacks;
     }
 
     private void InitStatus(StatusEffect status, StatusEffectData data)
@@ -71,9 +76,27 @@ public class PlayerSpellManager : MonoBehaviour
         status.duration = data.Duration;
     }
 
-    public static void SetChargeMultiplier(float amount)
+    public static void SetChargeMultiplier(PlayerSpellStats spell, float amount)
     {
-        superSpell.chargeMultiplier = amount;
-        superSpell.UpdateDamage();
+        spell.chargeMultiplier = amount;
+        spell.UpdateDamage();
+    }
+
+    public static void HandleCastRangeUpdate(PlayerSpellStats spell, char operation, float amount)
+    {
+        switch (operation)
+        {
+            case '*':
+                spell.castRange *= amount;
+                break;
+            case '+':
+                spell.castRange += amount;
+                break;
+            case '-':
+                spell.castRange -= amount;
+                break;
+        }
+        
+        OnCastRangeUpdated?.Invoke(spell);
     }
 }
