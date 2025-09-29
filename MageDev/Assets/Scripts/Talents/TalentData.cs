@@ -9,4 +9,5 @@ public class TalentData : ScriptableObject
     public string talentName;
     public int maxRank;
     public Sprite talentIcon;
+    public string talentTooltip;
 }

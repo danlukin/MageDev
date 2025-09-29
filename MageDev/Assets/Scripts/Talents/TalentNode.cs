@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ public class TalentNode : MonoBehaviour
     public Image talentIcon;
     public TMP_Text talentRankText;
     public Button talentButton;
+
+    public bool isActive = false;
 
     public static event Action<TalentNode> OnTalentPointSpent;
     public static event Action<TalentNode> OnUnlockNext;
@@ -69,5 +72,16 @@ public class TalentNode : MonoBehaviour
     {
         isUnlocked = true;
         UpdateUI();
+    }
+
+    public void ShowTooltip()
+    {
+        talentButton.GetComponentInChildren<Tooltip>(true).ShowTooltip(talentData.talentName, talentData.talentTooltip);
+        ToggleTooltipActive();
+    }
+
+    public void ToggleTooltipActive()
+    {
+        isActive = !isActive;
     }
 }

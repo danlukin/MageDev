@@ -13,6 +13,7 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private GameObject weapon;
     [SerializeField] private Transform projectileSpawnPoint;
 
+    private PlayerSpellStats spell;
     private GameObject[] allTargets;
     private GameObject target;
     private GameObject spellInstance;
@@ -21,12 +22,13 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Vector2 direction;
     private bool offCooldown = true;
     private float timeSinceCast;
-    private float chargeMultiplier = 1;
+    private float currentCharge = 1;
 
     void Start()
     {
         originalScale = spellSprite.transform.localScale;
         scale = originalScale;
+        spell = PlayerSpellManager.superSpell;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -50,9 +52,9 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             spellInstance.transform.right = direction;
             
             spellInstance.transform.localScale = scale;
-            PlayerSpellManager.SetChargeMultiplier(chargeMultiplier * 0.2f);
+            PlayerSpellManager.SetChargeMultiplier(spell, currentCharge * 0.2f);
 
-            chargeMultiplier = 1;
+            currentCharge = 1;
             timeSinceCast = Time.time;
             scale = originalScale;
             offCooldown = false;
@@ -61,7 +63,7 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void FixedUpdate()
     {
-        if (Time.time - timeSinceCast > PlayerSpellManager.superSpell.castSpeed)
+        if (Time.time - timeSinceCast > spell.castSpeed)
         {
             offCooldown = true;
         }
@@ -71,11 +73,12 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             HandleTargeting();
             spellInstance.transform.right = direction;
             spellInstance.transform.parent = projectileSpawnPoint;
-            if (chargeMultiplier < 50)
+
+            if (currentCharge < spell.maxChargeStacks)
             {
                 scale = new Vector3(scale.x * 1.05f, scale.y * 1.05f, scale.z);
                 spellInstance.transform.localScale = scale;
-                ++chargeMultiplier;
+                ++currentCharge;
             }
         }
     }

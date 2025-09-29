@@ -36,7 +36,15 @@ public class TalentNodeManager : MonoBehaviour
 
     private void CheckAvailablePoints(TalentNode node)
     {
-        if (availableTalentPoints > 0) node.HandleUpgrade();
+        if (availableTalentPoints > 0 & node.isActive)
+        {
+            node.HandleUpgrade();
+            node.ToggleTooltipActive();
+        }
+        else
+        {
+            node.ShowTooltip();
+        }
     }
 
     public void UpdateTalentPoints(int amount)
