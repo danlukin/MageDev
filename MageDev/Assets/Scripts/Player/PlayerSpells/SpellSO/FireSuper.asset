@@ -17,7 +17,7 @@ MonoBehaviour:
   spellType: 1
   Damage: 3
   projSpeed: 3
-  castSpeed: 1
+  castSpeed: 10
   castRange: 50
   statusChance: 1
   maxChargeStacks: 50

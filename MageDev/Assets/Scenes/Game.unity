@@ -7889,7 +7889,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.34109113, g: 0.46624875, b: 0.990566, a: 1}
+    m_NormalColor: {r: 0, g: 0.18731564, b: 0.9716981, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -11379,7 +11379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.32484868, g: 0.48178393, b: 0.9433962, a: 1}
+  m_Color: {r: 0, g: 0.25316477, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12102,7 +12102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.17777678, g: 0.30408457, b: 0.8018868, a: 1}
+  m_Color: {r: 0.17777678, g: 0.30408457, b: 0.8018868, a: 0.45490196}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13005,7 +13005,7 @@ MonoBehaviour:
   - {fileID: 1959767273}
   - {fileID: 1112656709}
   talentPointsText: {fileID: 279300134}
-  availableTalentPoints: 10
+  availableTalentPoints: 0
 --- !u!225 &1526611075
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13378,7 +13378,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: c6d27cc29c74fe4489bd27a4fa9f3684, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

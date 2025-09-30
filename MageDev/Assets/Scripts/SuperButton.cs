@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Image = UnityEngine.UI.Image;
 
 public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -65,7 +68,13 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (Time.time - timeSinceCast > spell.castSpeed)
         {
+            gameObject.GetComponent<Image>().fillAmount = (Time.time - timeSinceCast) / spell.castSpeed;
             offCooldown = true;
+        }
+
+        if (!offCooldown)
+        {
+            gameObject.GetComponent<Image>().fillAmount = (Time.time - timeSinceCast) / spell.castSpeed;
         }
 
         if (Pressed & offCooldown)
