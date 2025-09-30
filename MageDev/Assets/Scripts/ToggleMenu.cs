@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ToggleMenu : MonoBehaviour
 {
-    private GameObject StageUIManager;
+    private GameObject StageUI;
     private CanvasGroup[] components;
     private CanvasGroup StageCanvas;
     private CanvasGroup TalentCanvas;
@@ -31,8 +31,8 @@ public class ToggleMenu : MonoBehaviour
 
     private void Setup()
     {
-        StageUIManager = GameObject.Find("StageUIManager");
-        components = StageUIManager.GetComponentsInChildren<CanvasGroup>(true);
+        StageUI = GameObject.Find("StageUI");
+        components = StageUI.GetComponentsInChildren<CanvasGroup>(true);
         foreach (CanvasGroup x in components)
         {
             switch (x.name)
