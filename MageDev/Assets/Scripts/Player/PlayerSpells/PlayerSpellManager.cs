@@ -32,6 +32,8 @@ public class StatusEffect
     public float HOTAmount;
     public float tickRate;
     public float duration;
+
+    public GameObject animation;
 }
 
 public class PlayerSpellManager : MonoBehaviour
@@ -69,11 +71,12 @@ public class PlayerSpellManager : MonoBehaviour
 
     private void InitStatus(StatusEffect status, StatusEffectData data)
     {
-        status.name = data.name;
+        status.name = data.Name;
         status.DOTAmount = data.DOTAmount;
         status.HOTAmount = data.HOTAmount;
         status.tickRate = data.tickRate;
         status.duration = data.Duration;
+        status.animation = data.StatusAnimation;
     }
 
     public static void SetChargeMultiplier(PlayerSpellStats spell, float amount)

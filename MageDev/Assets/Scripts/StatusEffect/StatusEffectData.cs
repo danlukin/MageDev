@@ -11,4 +11,5 @@ public class StatusEffectData : ScriptableObject
     public float HOTAmount;
     public float tickRate;
     public float Duration;
+    public GameObject StatusAnimation;
 }

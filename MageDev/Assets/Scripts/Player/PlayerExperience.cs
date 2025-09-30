@@ -14,7 +14,7 @@ public class PlayerExperience : MonoBehaviour
     [SerializeField] private EXPBar expBar;
     private float currentExp;
     private float expToLvlUp;
-    private float currentLvl = 1;
+    private int currentLvl = 1;
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class PlayerExperience : MonoBehaviour
 
     private void SetExpToLvlUp()
     {
-        expToLvlUp = MathF.Pow(currentLvl * 3, currentLvl);
+        expToLvlUp = MathF.Pow(currentLvl, 3) + 2;
     }
 
     public void GrantExperience(float amount)

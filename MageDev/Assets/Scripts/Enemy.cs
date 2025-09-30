@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
     [SerializeField] private float damage = 1f;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float maxAngle = 15;
+    [SerializeField] private GameObject statusContainer;
 
     public Difficulty difficulty = Difficulty.normal;
     private Rigidbody2D rb;
@@ -162,7 +163,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
     private void HandleOnDeath()
     {
-        RemoveEffect();
+        if (status != null) RemoveEffect();
         OnEnemyKilled?.Invoke(this);
         Destroy(gameObject);
     }
@@ -182,21 +183,36 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
     public void ApplyEffect(StatusEffect _status)
     {
-        if (status != null)
+        if (currentHealth > 0)
         {
-            currentEffectTime = nextTickTime - currentEffectTime;
-            if (currentEffectTime < 0) currentEffectTime = -currentEffectTime;
-            nextTickTime = 0;
+            if (status != null)
+            {
+                currentEffectTime = nextTickTime - currentEffectTime;
+                if (currentEffectTime < 0) currentEffectTime = -currentEffectTime;
+                nextTickTime = 0;
+            }
+            else
+            {
+                status = _status;
+                HandleStatusAnimation(true);
+            }
+
+            status = _status;
         }
 
-        status = _status;
+        
+    }
+
+    private void HandleStatusAnimation(bool effectActive)
+    {
+        statusContainer.transform.Find(status.name).gameObject.SetActive(effectActive);
     }
 
     public void HandleEffect()
     {
         currentEffectTime += Time.deltaTime;
 
-        if (currentEffectTime >= status.duration) RemoveEffect();
+        if (status != null & currentEffectTime >= status.duration) RemoveEffect();
 
         if (status == null) return;
 
@@ -215,6 +231,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
     public void RemoveEffect()
     {
+        HandleStatusAnimation(false);
         status = null;
         currentEffectTime = 0;
         nextTickTime = 0;
