@@ -37,7 +37,7 @@ public class EnemyManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (activeEnemyCount == 0 & waveState != WaveState.Dead)
+        if (activeEnemyCount <= 0 & waveState != WaveState.Dead)
         {
             OnWaveCompleted?.Invoke(this);
         }
@@ -73,8 +73,8 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnNewWave()
     {
-        int normalSpawn = (StageManager.stageDifficulty / 2) + 3;
-        int eliteSpawn = StageManager.stageDifficulty / 3;
+        int normalSpawn = (StageManager.stageDifficulty / 2) + 5;
+        int eliteSpawn = StageManager.stageDifficulty / 2;
 
         for (int i = 0; i < normalSpawn; i++)
         { SpawnNewEnemy(normalEnemy); }
@@ -92,11 +92,6 @@ public class EnemyManager : MonoBehaviour
         Quaternion noRotation = Quaternion.Euler(0, 0, 0);
         Instantiate(enemy, position, noRotation);
         ++activeEnemyCount;
-    }
-
-    private void DropExperienceGem(Vector3 position)
-    {
-        var gem = Instantiate(expGem, position, Quaternion.identity);
     }
 
     private void EnemyOnKilled(Enemy enemy)

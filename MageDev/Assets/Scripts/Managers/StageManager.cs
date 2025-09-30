@@ -15,6 +15,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] GameObject deathScreen;
     [SerializeField] GameObject winScreen;
 
+    [SerializeField] private int checkpoint = 1;
     private bool waveChanged = false;
 
     void Awake()
@@ -75,7 +76,7 @@ public class StageManager : MonoBehaviour
                 }
                 break;
             case WaveState.Dead:
-                UpdateWaveNumber("reset");
+                UpdateWaveNumber("checkpoint");
                 break;
             case WaveState.WaveStart:
                 waveChanged = false;
@@ -105,6 +106,7 @@ public class StageManager : MonoBehaviour
                 ++waveNumber;
                 CheckForWin();
                 HandleStageDifficulty();
+                if (waveNumber % 10 == 1) checkpoint = waveNumber;
                 break;
             case "decrement":
                 --waveNumber;
@@ -113,6 +115,14 @@ public class StageManager : MonoBehaviour
             case "reset":
                 waveNumber = 1;
                 stageDifficulty = 0;
+                break;
+            case "checkpoint":
+                int difference = waveNumber - checkpoint;
+                if (difference == 1) {
+                    difference *= 2;
+                }
+                stageDifficulty -= difference / 2;
+                waveNumber = checkpoint;
                 break;
         }
 
@@ -127,7 +137,7 @@ public class StageManager : MonoBehaviour
 
     private void UpdateWaveUI()
     {
-        WaveUI.text = "Wave " + waveNumber;
+        WaveUI.text = "Wave " + waveNumber + ", Stage Difficulty: " + stageDifficulty;
     }
 
     private void HandleStageDifficulty()
