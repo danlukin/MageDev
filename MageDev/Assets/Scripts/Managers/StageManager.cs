@@ -14,6 +14,7 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] GameObject deathScreen;
     [SerializeField] GameObject winScreen;
+    [SerializeField] GameObject relicSelectUI;
 
     [SerializeField] private int checkpoint = 1;
     private bool waveChanged = false;
@@ -52,7 +53,7 @@ public class StageManager : MonoBehaviour
         waveNumber = 1;
         UpdateWaveUI();
         UpdateWaveState(WaveState.WaveStart);
-
+        relicSelectUI.SetActive(true);
     }
 
     public void UpdateWaveState(WaveState newState)
@@ -98,6 +99,12 @@ public class StageManager : MonoBehaviour
         UpdateWaveState(WaveState.Dead);
     }
 
+    private void HandleCheckpointReached()
+    {
+        checkpoint = waveNumber;
+        relicSelectUI.SetActive(true);
+    }
+
     private void UpdateWaveNumber(string task)
     {
         switch (task)
@@ -106,7 +113,7 @@ public class StageManager : MonoBehaviour
                 ++waveNumber;
                 CheckForWin();
                 HandleStageDifficulty();
-                if (waveNumber % 10 == 1) checkpoint = waveNumber;
+                if (waveNumber % 10 == 1) HandleCheckpointReached();
                 break;
             case "decrement":
                 --waveNumber;
@@ -118,7 +125,8 @@ public class StageManager : MonoBehaviour
                 break;
             case "checkpoint":
                 int difference = waveNumber - checkpoint;
-                if (difference == 1) {
+                if (difference == 1)
+                {
                     difference *= 2;
                 }
                 stageDifficulty -= difference / 2;
