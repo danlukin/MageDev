@@ -2,27 +2,41 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TalentNodeManager : MonoBehaviour
 {
+    [SerializeField] private Button respecButton;
+
     public TalentNode[] talentNodes;
     public TMP_Text talentPointsText;
-    public int availableTalentPoints;
+    public static int availableTalentPoints;
+
+    private TalentNode currentActiveNode;
 
     private void OnEnable()
     {
-        TalentNode.OnTalentPointSpent += HandleTalentPointSpent;
+        TalentNode.OnTalentPointInteract += HandleTalentPointInteract;
         TalentNode.OnUnlockNext += HandleUnlockNext;
         PlayerExperience.OnLevelUp += HandleLevelUp;
+
+        respecButton.onClick.AddListener(() => RespecAllNodes());
     }
 
     private void OnDisable()
     {
-        TalentNode.OnTalentPointSpent -= HandleTalentPointSpent;
+        TalentNode.OnTalentPointInteract -= HandleTalentPointInteract;
         TalentNode.OnUnlockNext -= HandleUnlockNext;
         PlayerExperience.OnLevelUp -= HandleLevelUp;
+
+        foreach (TalentNode node in talentNodes)
+        {
+            node.talentButton.onClick.RemoveListener(() => CheckAvailablePoints(node));
+        }
+
+        respecButton.onClick.RemoveListener(() => RespecAllNodes());
     }
 
     void Start()
@@ -36,7 +50,7 @@ public class TalentNodeManager : MonoBehaviour
 
     private void CheckAvailablePoints(TalentNode node)
     {
-        if (availableTalentPoints > 0 & node.isActive)
+        if (availableTalentPoints > 0 & currentActiveNode == node)
         {
             node.HandleUpgrade();
             node.ToggleTooltipActive();
@@ -44,6 +58,7 @@ public class TalentNodeManager : MonoBehaviour
         else
         {
             node.ShowTooltip();
+            currentActiveNode = node;
         }
     }
 
@@ -53,11 +68,15 @@ public class TalentNodeManager : MonoBehaviour
         talentPointsText.text = availableTalentPoints.ToString();
     }
 
-    private void HandleTalentPointSpent(TalentNode node)
+    private void HandleTalentPointInteract(TalentNode node, bool upgrade)
     {
-        if (availableTalentPoints > 0)
+        if (upgrade)
         {
-            UpdateTalentPoints(-1);
+            if (availableTalentPoints > 0) UpdateTalentPoints(-1);
+        }
+        else
+        {
+            UpdateTalentPoints(1);
         }
     }
 
@@ -71,9 +90,24 @@ public class TalentNodeManager : MonoBehaviour
             }
         }
     }
-    
+
     private void HandleLevelUp(PlayerExperience experience)
     {
         UpdateTalentPoints(1);
+    }
+
+    private void RespecAllNodes()
+    {
+        foreach (TalentNode node in talentNodes)
+        {
+            if (node.currentRank > 0)
+            {
+                int rank = node.currentRank;
+                for (int i = 0; i < rank; ++i)
+                {
+                    node.HandleDowngrade();
+                }
+            }
+        }
     }
 }

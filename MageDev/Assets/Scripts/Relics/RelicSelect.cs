@@ -1,0 +1,28 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RelicSelect : MonoBehaviour
+{
+    public static event Action<RelicSelect> OnSelectActive;
+
+    void OnEnable()
+    {
+        StartCoroutine(DelayedActivation());
+    }
+
+    void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
+
+    IEnumerator DelayedActivation()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        Time.timeScale = 0;
+        OnSelectActive?.Invoke(this);
+    }
+
+}

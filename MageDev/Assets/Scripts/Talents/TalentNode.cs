@@ -10,6 +10,7 @@ public class TalentNode : MonoBehaviour
 {
     public TalentData talentData;
     public List<TalentNode> prerequisites;
+    public TalentNode nextNode;
 
     public int currentRank;
     public bool isUnlocked = false;
@@ -18,9 +19,11 @@ public class TalentNode : MonoBehaviour
     public TMP_Text talentRankText;
     public Button talentButton;
 
-    public bool isActive = false;
+    public bool tooltipIsActive = false;
 
-    public static event Action<TalentNode> OnTalentPointSpent;
+    private int minUnlockRank = 1;
+
+    public static event Action<TalentNode, bool> OnTalentPointInteract;
     public static event Action<TalentNode> OnUnlockNext;
 
     private void OnValidate()
@@ -51,15 +54,29 @@ public class TalentNode : MonoBehaviour
         if (isUnlocked && currentRank < talentData.maxRank)
         {
             ++currentRank;
-            OnTalentPointSpent?.Invoke(this);
+            OnTalentPointInteract?.Invoke(this, true);
             if (currentRank == 1) OnUnlockNext?.Invoke(this);
+            UpdateUI();
+        }
+    }
+
+    public void HandleDowngrade()
+    {
+        if (currentRank >= 1)
+        {
+            --currentRank;
+            OnTalentPointInteract?.Invoke(this, false);
+            if (currentRank < minUnlockRank & nextNode != null)
+            {
+                nextNode.isUnlocked = false;
+                nextNode.UpdateUI();
+            }
             UpdateUI();
         }
     }
 
     public bool CanUnlockTalent()
     {
-        int minUnlockRank = 1;
         foreach (TalentNode node in prerequisites)
         {
             if (!node.isUnlocked || node.currentRank < minUnlockRank) return false;
@@ -82,6 +99,6 @@ public class TalentNode : MonoBehaviour
 
     public void ToggleTooltipActive()
     {
-        isActive = !isActive;
+        tooltipIsActive = !tooltipIsActive;
     }
 }

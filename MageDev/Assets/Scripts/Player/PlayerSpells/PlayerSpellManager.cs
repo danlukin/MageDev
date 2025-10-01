@@ -92,6 +92,9 @@ public class PlayerSpellManager : MonoBehaviour
             case '*':
                 spell.castRange *= amount;
                 break;
+            case '/':
+                spell.castRange /= amount;
+                break;
             case '+':
                 spell.castRange += amount;
                 break;

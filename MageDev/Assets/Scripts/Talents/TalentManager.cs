@@ -11,52 +11,69 @@ public class TalentManager : MonoBehaviour
 
     private void OnEnable()
     {
-        TalentNode.OnTalentPointSpent += HandleTalentPointSpent;
-    }
-
-    void OnDisable()
-    {
-        TalentNode.OnTalentPointSpent -= HandleTalentPointSpent;
-    }
-
-    private void HandleTalentPointSpent(TalentNode node)
-    {
-        string talentName = node.talentData.talentName;
+        TalentNode.OnTalentPointInteract += HandleTalentPointInteract;
+        
         basic = PlayerSpellManager.basicSpell;
         super = PlayerSpellManager.superSpell;
         status = PlayerSpellManager.status;
+    }
+
+    private void OnDisable()
+    {
+        TalentNode.OnTalentPointInteract -= HandleTalentPointInteract;
+    }
+
+    private void HandleTalentPointInteract(TalentNode node, bool upgrade)
+    {
+        string talentName = node.talentData.talentName;
 
         switch (talentName)
         {
             case "Basic Damage":
-                basic.baseDamage += 1;
+                if (upgrade) basic.baseDamage += 1;  
+                else basic.baseDamage -= 1;
                 basic.UpdateDamage();
                 break;
             case "Basic Status Chance":
-                basic.statusChance += 0.1f;
+                if (upgrade) basic.statusChance += 0.1f;
+                else basic.statusChance -= 0.1f;
                 break;
             case "Basic Range":
-                PlayerSpellManager.HandleCastRangeUpdate(basic, '*', 2);
+                if (upgrade) PlayerSpellManager.HandleCastRangeUpdate(basic, '*', 2);
+                else PlayerSpellManager.HandleCastRangeUpdate(basic, '/', 2);
                 break;
             case "Super Damage":
-                super.baseDamage += 1;
+                if (upgrade) super.baseDamage += 1;
+                else super.baseDamage -= 1;
                 super.UpdateDamage();
                 break;
             case "Super Speed":
-                super.projSpeed += 0.5f;
+                if (upgrade) super.projSpeed += 0.5f;
+                else super.projSpeed -= 0.5f;
                 break;
             case "Super Max Charge":
-                super.maxChargeStacks += 10;
+                if (upgrade) super.maxChargeStacks += 10;
+                else super.maxChargeStacks -= 10;
                 break;
             case "Status Damage":
-                status.DOTAmount += 1;
+                if (upgrade) status.DOTAmount += 1;
+                else status.DOTAmount -= 1;
                 break;
             case "Status Duration":
-                status.duration += 1;
+                if (upgrade) status.duration += 1;
+                else status.duration -= 1;
                 break;
             case "Status Faster Damage":
-                status.tickRate *= 0.66f;
-                status.duration *= 0.66f;
+                if (upgrade)
+                {
+                    status.tickRate *= 0.66f;
+                    status.duration *= 0.66f;
+                }
+                else
+                {
+                    status.tickRate /= 0.66f;
+                    status.duration /= 0.66f;
+                }
                 break;
             default:
                 Debug.LogWarning("Unknown talent: " + talentName);

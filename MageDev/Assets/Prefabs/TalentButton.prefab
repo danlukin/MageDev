@@ -271,12 +271,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talentData: {fileID: 0}
   prerequisites: []
+  nextNode: {fileID: 0}
   currentRank: 0
   isUnlocked: 0
   talentIcon: {fileID: 6197263349990040780}
   talentRankText: {fileID: 5287386101165606940}
   talentButton: {fileID: 2571202245446578531}
-  isActive: 0
+  tooltipIsActive: 0
 --- !u!1001 &8369175068434886285
 PrefabInstance:
   m_ObjectHideFlags: 0

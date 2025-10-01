@@ -46,6 +46,9 @@ public class Tooltip : MonoBehaviour
         headerText.text = header;
         contentText.text = content;
 
+        headerLength = headerText.text.Length;
+        contentLength = contentText.text.Length;
+
         layoutElement.enabled = headerLength > characterWrapLimit || contentLength > characterWrapLimit;
     }
 
