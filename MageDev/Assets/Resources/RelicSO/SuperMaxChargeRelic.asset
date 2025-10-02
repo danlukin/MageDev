@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aadac2ebc328d4e4e86de8b33ef0dc61, type: 3}
-  m_Name: BasicDamageRelic
+  m_Name: SuperMaxChargeRelic
   m_EditorClassIdentifier: 
-  relicName: Basic Damage
-  relicSprite: {fileID: 21300000, guid: 7121315e08a6a47418a82ce9b2c3a6b1, type: 3}
-  stackLimit: 999
-  Description: Increases basic spell damage by 50%.
+  relicName: Super Max Charge
+  relicSprite: {fileID: 21300000, guid: 778656d3f0d7dd64c808d8f9b4f843fb, type: 3}
+  stackLimit: 1
+  Description: Super spell can be charged for longer.

@@ -7,16 +7,10 @@ using UnityEngine.UI;
 
 public class ToggleMenu : MonoBehaviour
 {
-    private GameObject StageUI;
-    private CanvasGroup[] components;
-    private CanvasGroup StageCanvas;
-    private CanvasGroup TalentCanvas;
-    private Button button;
+    [SerializeField] private CanvasGroup mainCanvas;
+    [SerializeField] private CanvasGroup menuCanvas;
 
-    private void Start()
-    {
-        Setup();
-    }
+    private Button button;
 
     private void OnEnable()
     {
@@ -29,43 +23,25 @@ public class ToggleMenu : MonoBehaviour
         button.onClick.RemoveAllListeners();
     }
 
-    private void Setup()
-    {
-        StageUI = GameObject.Find("StageUI");
-        components = StageUI.GetComponentsInChildren<CanvasGroup>(true);
-        foreach (CanvasGroup x in components)
-        {
-            switch (x.name)
-            {
-                case "StageCanvas":
-                    StageCanvas = x;
-                    break;
-                case "TalentCanvas":
-                    TalentCanvas = x;
-                    break;
-            }
-        }
-    }
-
     private void Toggle()
     {
-        if (StageCanvas.alpha == 1)
+        if (mainCanvas.alpha == 1)
         {
-            StageCanvas.alpha = 0;
-            StageCanvas.blocksRaycasts = false;
+            mainCanvas.alpha = 0;
+            mainCanvas.blocksRaycasts = false;
 
-            TalentCanvas.alpha = 1;
-            TalentCanvas.blocksRaycasts = true;
+            menuCanvas.alpha = 1;
+            menuCanvas.blocksRaycasts = true;
 
             Time.timeScale = 0;
         }
         else
         {
-            StageCanvas.alpha = 1;
-            StageCanvas.blocksRaycasts = true;
+            mainCanvas.alpha = 1;
+            mainCanvas.blocksRaycasts = true;
 
-            TalentCanvas.alpha = 0;
-            TalentCanvas.blocksRaycasts = false;
+            menuCanvas.alpha = 0;
+            menuCanvas.blocksRaycasts = false;
 
             Time.timeScale = 1;
         }

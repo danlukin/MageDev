@@ -56,23 +56,24 @@ public class TalentManager : MonoBehaviour
                 else super.maxChargeStacks -= 10;
                 break;
             case "Status Damage":
-                if (upgrade) status.DOTAmount += 1;
-                else status.DOTAmount -= 1;
+                if (upgrade) status.baseDamage += 1;
+                else status.baseDamage -= 1;
+                status.UpdateDamage();
                 break;
             case "Status Duration":
-                if (upgrade) status.duration += 1;
-                else status.duration -= 1;
+                if (upgrade) status.baseDuration += 1;
+                else status.baseDuration -= 1;
                 break;
             case "Status Faster Damage":
                 if (upgrade)
                 {
                     status.tickRate *= 0.66f;
-                    status.duration *= 0.66f;
+                    status.durationTalentMultiplier -= 0.33f;
                 }
                 else
                 {
                     status.tickRate /= 0.66f;
-                    status.duration /= 0.66f;
+                    status.durationTalentMultiplier += 0.33f;
                 }
                 break;
             default:

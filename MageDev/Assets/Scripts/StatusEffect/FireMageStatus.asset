@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: FireMageStatus
   m_EditorClassIdentifier: 
   Name: Ignite
-  DOTAmount: 2
-  HOTAmount: 0
+  Damage: 2
   tickRate: 1
   Duration: 5
   StatusAnimation: {fileID: 8486594989936567744, guid: ba899bea90ad1e44ea39644f1222792f, type: 3}

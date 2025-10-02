@@ -10,30 +10,47 @@ public class PlayerSpellStats
     public string name;
     public float damage;
     public float baseDamage;
-    public float damageMultiplier = 1;
     public float projSpeed;
     public float castSpeed;
     public float castRange;
     public float statusChance;
+    public float damageRelicMultiplier = 1;
 
     public int maxChargeStacks;
     public float chargeMultiplier = 1;
 
     public void UpdateDamage()
     {
-        damage = baseDamage * damageMultiplier * chargeMultiplier;
+        damage = baseDamage * damageRelicMultiplier * chargeMultiplier;
     }
 }
 
 public class StatusEffect
 {
     public string name;
-    public float DOTAmount;
-    public float HOTAmount;
+
+    public float damage;
+    public float baseDamage;
+    public float damageRelicMultiplier = 1;
+
     public float tickRate;
+
     public float duration;
+    public float baseDuration;
+    public float durationRelicMultiplier = 1;
+    public float durationTalentMultiplier = 1;
 
     public GameObject animation;
+
+    public void UpdateDamage()
+    {
+        damage = baseDamage * damageRelicMultiplier;
+    }
+
+    public void UpdateDuration()
+    {
+        duration = baseDuration * durationRelicMultiplier * durationTalentMultiplier;
+    }
 }
 
 public class PlayerSpellManager : MonoBehaviour
@@ -72,10 +89,11 @@ public class PlayerSpellManager : MonoBehaviour
     private void InitStatus(StatusEffect status, StatusEffectData data)
     {
         status.name = data.Name;
-        status.DOTAmount = data.DOTAmount;
-        status.HOTAmount = data.HOTAmount;
+        status.damage = data.Damage;
+        status.baseDamage = data.Damage;
         status.tickRate = data.tickRate;
         status.duration = data.Duration;
+        status.baseDuration = data.Duration;
         status.animation = data.StatusAnimation;
     }
 

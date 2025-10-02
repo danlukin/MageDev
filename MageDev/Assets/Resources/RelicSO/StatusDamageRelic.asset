@@ -15,4 +15,4 @@ MonoBehaviour:
   relicName: Status Damage
   relicSprite: {fileID: 21300000, guid: fd461e6bd0a8ae24799f0af2b45f2117, type: 3}
   stackLimit: 999
-  Description: Increases status base damage by 2.
+  Description: Increases status damage by 50%.

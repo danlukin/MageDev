@@ -45,7 +45,7 @@ public class TalentNodeManager : MonoBehaviour
         {
             node.talentButton.onClick.AddListener(() => CheckAvailablePoints(node));
         }
-        UpdateTalentPoints(0);
+        UpdateTalentPoints(10);
     }
 
     private void CheckAvailablePoints(TalentNode node)
