@@ -10,7 +10,6 @@ public class Tooltip : MonoBehaviour
 {
     [SerializeField] private TMP_Text headerText;
     [SerializeField] private TMP_Text contentText;
-
     public int characterWrapLimit;
     private int headerLength;
     private int contentLength;

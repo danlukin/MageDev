@@ -9,7 +9,7 @@ using RelicGroup = System.Linq.IGrouping<string, RelicData>;
 public class RelicManager : MonoBehaviour
 {
     public static List<RelicData> relicList;
-    private IEnumerable<RelicGroup> groupedRelics;
+    public static IEnumerable<RelicGroup> groupedRelics;
 
     private PlayerSpellStats basic;
     private PlayerSpellStats super;
@@ -30,14 +30,28 @@ public class RelicManager : MonoBehaviour
         RelicNode.OnRelicUpdate -= HandleRelicUpdate;
     }
 
-    private RelicGroup FindRelicGroup(string relic)
+    public static RelicGroup FindRelicGroup(string relic)
     {
-        foreach (RelicGroup group in groupedRelics)
+        if (groupedRelics != null)
         {
-            if (group.Key == relic) return group;
+            foreach (RelicGroup group in groupedRelics)
+            {
+                if (group.Key == relic) return group;
+            }
         }
 
         return null;
+    }
+
+    public static bool CheckLimit(RelicData relic)
+    {
+        RelicGroup group = FindRelicGroup(relic.relicName);
+        if (group != null)
+        {
+            if (group.Count() < relic.stackLimit) return true;
+            else return false;
+        }
+        else return true;
     }
 
     private void UpdateRelicList(RelicData relic, bool addRelic)
@@ -70,7 +84,7 @@ public class RelicManager : MonoBehaviour
             }
             else
             {
-                if (FindRelicGroup(relic.relicName).Count() < relic.stackLimit)
+                if (CheckLimit(relic))
                 {
                     UpdateRelicList(relic, true);
                     return true;
@@ -101,34 +115,59 @@ public class RelicManager : MonoBehaviour
             case "Basic Damage":
                 if (relicAdded)
                 {
-                    basic.baseDamage += 5;
+                    basic.damageRelicMultiplier += 0.5f;
                 }
                 else
                 {
-                    basic.baseDamage -= 5;
+                    basic.damageRelicMultiplier -= 0.5f;
                 }
                 basic.UpdateDamage();
                 break;
             case "Super Damage":
                 if (relicAdded)
                 {
-                    super.baseDamage += 3;
+                    super.damageRelicMultiplier += 0.5f;
                 }
                 else
                 {
-                    super.baseDamage -= 3;
+                    super.damageRelicMultiplier += 0.5f;
                 }
                 super.UpdateDamage();
+                break;
+            case "Super Max Charge":
+                if (relicAdded)
+                {
+                    super.maxChargeStacks += 15;
+                }
+                else
+                {
+                    super.maxChargeStacks -= 15;
+                }
                 break;
             case "Status Damage":
                 if (relicAdded)
                 {
-                    status.DOTAmount += 2;
+                    status.damageRelicMultiplier += 0.5f;
                 }
                 else
                 {
-                    status.DOTAmount -= 2;
+                    status.damageRelicMultiplier -= 0.5f;
                 }
+                status.UpdateDamage();
+                break;
+            case "Longer Status":
+                if (relicAdded)
+                {
+                    status.durationRelicMultiplier += 1f;
+                    status.baseDamage -= 1;
+                }
+                else
+                {
+                    status.durationRelicMultiplier -= 1f;
+                    status.baseDamage += 1;
+                }
+                status.UpdateDuration();
+                status.UpdateDamage();
                 break;
         }
 

@@ -10,6 +10,7 @@ public class RelicNodeManager : MonoBehaviour
 {
     [SerializeField] private GameObject relicObject;
     [SerializeField] private GameObject relicSelectUI;
+    [SerializeField] private GameObject relicInventory;
 
     private GridLayoutGroup relicPanel;
     private RelicNode relicNode;
@@ -17,6 +18,8 @@ public class RelicNodeManager : MonoBehaviour
     private RelicNode currentActiveNode;
 
     private RelicData[] allRelics;
+
+    public static event Action<bool> OnUpdateInventory;
 
     void Awake()
     {
@@ -46,7 +49,7 @@ public class RelicNodeManager : MonoBehaviour
         while (selectedIndexes.Count < 3)
         {
             int i = UnityEngine.Random.Range(0, allRelics.Length);
-            if (!selectedIndexes.Contains(i)) selectedIndexes.Add(i);
+            if (!selectedIndexes.Contains(i) & RelicManager.CheckLimit(allRelics[i])) selectedIndexes.Add(i);
         }
 
         for (int i = 0; i < choiceAmount; ++i)
@@ -71,6 +74,7 @@ public class RelicNodeManager : MonoBehaviour
         if (node == currentActiveNode)
         {
             node.AddRelic();
+            AddRelicToInventory(node);
             DestroyChildren();
             relicSelectUI.SetActive(false);
         }
@@ -81,7 +85,19 @@ public class RelicNodeManager : MonoBehaviour
         }
 
     }
-    
+
+    private void AddRelicToInventory(RelicNode node)
+    {
+        if (relicInventory.transform.Find(node.relicData.relicName) == null)
+        {
+            GameObject child = node.transform.Find("RelicInventoryNode").gameObject;
+            child.transform.SetParent(relicInventory.transform, false);
+            child.SetActive(true);
+        }
+
+        OnUpdateInventory?.Invoke(true);
+    }
+
     private void ShowTooltip(RelicNode node)
     {
         relicSelectUI.GetComponentInChildren<Tooltip>(true).ShowTooltip(node.relicData.relicName, node.relicData.Description);

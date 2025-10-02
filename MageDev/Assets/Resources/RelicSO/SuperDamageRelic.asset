@@ -15,4 +15,4 @@ MonoBehaviour:
   relicName: Super Damage
   relicSprite: {fileID: 21300000, guid: 778656d3f0d7dd64c808d8f9b4f843fb, type: 3}
   stackLimit: 999
-  Description: Increases super spell base damage by 3.
+  Description: Increases super spell damage by 50%.

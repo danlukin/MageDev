@@ -16,6 +16,7 @@ public class RelicNode : MonoBehaviour
     {
         if (relicData) UpdateUI();
         gameObject.name = relicData.relicName;
+        gameObject.GetComponentInChildren<RelicInventoryNode>(true).relicData = relicData;
     }
 
     private void OnDestroy()

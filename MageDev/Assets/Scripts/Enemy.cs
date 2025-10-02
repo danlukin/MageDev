@@ -199,8 +199,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
             status = _status;
         }
-
-        
     }
 
     private void HandleStatusAnimation(bool effectActive)
@@ -216,16 +214,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
 
         if (status == null) return;
 
-        if (status.HOTAmount > 0 && currentEffectTime >= nextTickTime)
+        if (status.damage > 0 && currentEffectTime >= nextTickTime)
         {
             nextTickTime += status.tickRate;
-            Heal(status.HOTAmount);
-        }
-
-        if (status.DOTAmount > 0 && currentEffectTime >= nextTickTime)
-        {
-            nextTickTime += status.tickRate;
-            Damage(status.DOTAmount);
+            Damage(status.damage);
         }
     }
 

@@ -7,8 +7,7 @@ using UnityEngine;
 public class StatusEffectData : ScriptableObject
 {
     public string Name;
-    public float DOTAmount;
-    public float HOTAmount;
+    public float Damage;
     public float tickRate;
     public float Duration;
     public GameObject StatusAnimation;
