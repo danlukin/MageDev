@@ -41,13 +41,16 @@ public class RelicInventoryNode : MonoBehaviour
         tooltip = transform.parent.parent.parent.Find("InventoryTooltip").gameObject.GetComponentInChildren<Tooltip>(true);;
     }
 
-    private void UpdateCurrentAmount(bool add)
+    private void UpdateCurrentAmount(string relic, bool add)
     {
-        if (add) ++currentAmount;
-        else --currentAmount;
+        if (relic == relicData.relicName)
+        {
+            if (add) ++currentAmount;
+            else --currentAmount;
 
-        if (currentAmount > 1) amountText.text = currentAmount.ToString();
-        else amountText.text = "";
+            if (currentAmount > 1) amountText.text = currentAmount.ToString();
+            else amountText.text = "";
+        }
     }
 
     private void UpdateUI()
