@@ -19,7 +19,7 @@ public class RelicNodeManager : MonoBehaviour
 
     private RelicData[] allRelics;
 
-    public static event Action<bool> OnUpdateInventory;
+    public static event Action<string, bool> OnUpdateInventory;
 
     void Awake()
     {
@@ -95,7 +95,7 @@ public class RelicNodeManager : MonoBehaviour
             child.SetActive(true);
         }
 
-        OnUpdateInventory?.Invoke(true);
+        OnUpdateInventory?.Invoke(node.relicData.relicName, true);
     }
 
     private void ShowTooltip(RelicNode node)
