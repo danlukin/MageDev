@@ -11,6 +11,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private int activeEnemyCount = 0;
     [SerializeField] private Enemy[] enemies;
     [SerializeField] private ExpGem expGem;
+    [SerializeField] private GoldCoin goldCoin;
     public static event Action<EnemyManager> DestroyEnemy;
     public static event Action<EnemyManager> OnWaveCompleted;
     private WaveState waveState;
@@ -97,6 +98,7 @@ public class EnemyManager : MonoBehaviour
     private void EnemyOnKilled(Enemy enemy)
     {
         expGem.SpawnExperienceGem(enemy);
+        goldCoin.RandomGoldDrop(enemy);
         --activeEnemyCount;
     }
 }
