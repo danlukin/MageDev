@@ -9,4 +9,5 @@ public class RelicData : ScriptableObject
     public Sprite relicSprite;
     public int stackLimit = 1;
     public string Description;
+    public int cost = 5;
 }

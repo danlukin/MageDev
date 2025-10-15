@@ -10,8 +10,10 @@ public class RelicNodeManager : MonoBehaviour
 {
     [SerializeField] private GameObject relicObject;
     [SerializeField] private GameObject relicSelectUI;
+    [SerializeField] private GameObject relicShopUI;
     [SerializeField] private GameObject relicInventory;
 
+    private GameObject currentRelicUI;
     private GridLayoutGroup relicPanel;
     private RelicNode relicNode;
     private int choiceAmount = 3;
@@ -24,22 +26,34 @@ public class RelicNodeManager : MonoBehaviour
     void Awake()
     {
         allRelics = Resources.LoadAll<RelicData>("RelicSO/");
-        relicPanel = relicSelectUI.GetComponentInChildren<GridLayoutGroup>();
         relicNode = relicObject.GetComponent<RelicNode>();
     }
 
     private void OnEnable()
     {
         RelicSelect.OnSelectActive += HandleSelectActive;
+        RelicVendor.OnShopRefresh += InstantiateRelicPickUI;
     }
 
     private void OnDisable()
     {
         RelicSelect.OnSelectActive -= HandleSelectActive;
+        RelicVendor.OnShopRefresh -= InstantiateRelicPickUI;
     }
 
-    private void HandleSelectActive(RelicSelect obj)
+    private void HandleSelectActive(string ui)
     {
+        switch (ui)
+        {
+            case "RelicSelectUI":
+                currentRelicUI = relicSelectUI;
+                break;
+            case "RelicShopUI":
+                currentRelicUI = relicShopUI;
+                break;
+        }
+
+        relicPanel = currentRelicUI.GetComponentInChildren<GridLayoutGroup>();
         InstantiateRelicPickUI();
     }
 
@@ -51,6 +65,8 @@ public class RelicNodeManager : MonoBehaviour
             int i = UnityEngine.Random.Range(0, allRelics.Length);
             if (!selectedIndexes.Contains(i) & RelicManager.CheckLimit(allRelics[i])) selectedIndexes.Add(i);
         }
+
+        if (relicPanel.transform.childCount > 0) DestroyChildren();
 
         for (int i = 0; i < choiceAmount; ++i)
         {
@@ -69,14 +85,31 @@ public class RelicNodeManager : MonoBehaviour
         }
     }
 
+    private bool RelicCanBeAdded(RelicNode node)
+    {
+        if (currentRelicUI.name == "RelicShopUI" & node.relicCost > PlayerCurrency.gold) return false;
+        return true;
+    }
+
     private void HandleRelicSelect(RelicNode node)
     {
-        if (node == currentActiveNode)
+        if (node == currentActiveNode & RelicCanBeAdded(node))
         {
             node.AddRelic();
             AddRelicToInventory(node);
             DestroyChildren();
-            relicSelectUI.SetActive(false);
+
+            switch (currentRelicUI.name)
+            {
+                case "RelicSelectUI":
+                    currentRelicUI.SetActive(false);
+                    break;
+                case "RelicShopUI":
+                    currentRelicUI.GetComponent<CanvasGroup>().alpha = 0;
+                    currentRelicUI.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                    PlayerCurrency.HandleCurrencyChange(Currency.Gold, -node.relicCost);
+                    break;
+            }
         }
         else
         {
@@ -100,7 +133,7 @@ public class RelicNodeManager : MonoBehaviour
 
     private void ShowTooltip(RelicNode node)
     {
-        relicSelectUI.GetComponentInChildren<Tooltip>(true).ShowTooltip(node.relicData.relicName, node.relicData.Description);
+        currentRelicUI.GetComponentInChildren<Tooltip>(true).ShowTooltip(node.relicData.relicName, node.relicData.Description);
     }
 
 }

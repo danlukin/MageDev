@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public enum Currency
 {
@@ -10,11 +11,11 @@ public enum Currency
 
 public class PlayerCurrency : MonoBehaviour
 {
-    public static float gold;
+    public static int gold;
 
     public static event Action OnGoldChanged;
 
-    public static void HandleCurrencyChange(Currency currency, float amount)
+    public static void HandleCurrencyChange(Currency currency, int amount)
     {
         switch (currency)
         {

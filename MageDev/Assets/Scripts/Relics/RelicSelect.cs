@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RelicSelect : MonoBehaviour
 {
-    public static event Action<RelicSelect> OnSelectActive;
+    public static event Action<string> OnSelectActive;
 
     void OnEnable()
     {
@@ -22,7 +22,7 @@ public class RelicSelect : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         Time.timeScale = 0;
-        OnSelectActive?.Invoke(this);
+        OnSelectActive?.Invoke(gameObject.name);
     }
 
 }

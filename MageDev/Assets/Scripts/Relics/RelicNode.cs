@@ -10,6 +10,8 @@ public class RelicNode : MonoBehaviour
     [SerializeField] private Image relicIcon;
     [SerializeField] public Button relicButton;
 
+    public int relicCost;
+
     public static event Action<RelicData, bool> OnRelicUpdate;
 
     private void Awake()
@@ -17,6 +19,7 @@ public class RelicNode : MonoBehaviour
         if (relicData) UpdateUI();
         gameObject.name = relicData.relicName;
         gameObject.GetComponentInChildren<RelicInventoryNode>(true).relicData = relicData;
+        relicCost = relicData.cost;
     }
 
     private void OnDestroy()
