@@ -17,9 +17,6 @@ public class StageManager : MonoBehaviour
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject relicSelectUI;
 
-    [SerializeField] TMP_Text goldCountText;
-    [SerializeField] TMP_Text goldInventoryText;
-
     [SerializeField] private int checkpoint = 1;
     private bool waveChanged = false;
 
@@ -28,20 +25,17 @@ public class StageManager : MonoBehaviour
         Instance = this;
         PlayerHealth.OnPlayerKilled += PlayerHealthOnPlayerKilled;
         EnemyManager.OnWaveCompleted += EnemyManagerOnWaveCompleted;
-        PlayerCurrency.OnGoldChanged += UpdateGoldUI;
     }
 
     void OnDestroy()
     {
         PlayerHealth.OnPlayerKilled -= PlayerHealthOnPlayerKilled;
         EnemyManager.OnWaveCompleted -= EnemyManagerOnWaveCompleted;
-        PlayerCurrency.OnGoldChanged -= UpdateGoldUI;
     }
 
     void Start()
     {
         InitializeStage();
-        UpdateGoldUI();
     }
 
     void Update()
@@ -153,12 +147,6 @@ public class StageManager : MonoBehaviour
     private void UpdateWaveUI()
     {
         WaveUI.text = "Wave " + waveNumber;
-    }
-
-    private void UpdateGoldUI()
-    {
-        goldCountText.text = PlayerCurrency.gold.ToString();
-        goldInventoryText.text = PlayerCurrency.gold.ToString();
     }
 
     private void HandleStageDifficulty()

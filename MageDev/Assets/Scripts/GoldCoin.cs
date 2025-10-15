@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GoldCoin : MonoBehaviour
 {
-    [SerializeField] private float baseGold = 1;
-    private float gold;
+    [SerializeField] private int baseGold = 1;
+    private int gold;
 
     private void Awake()
     {
