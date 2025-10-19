@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerTargetAndShoot : MonoBehaviour
+public class PlayerTargetAndShoot : MonoBehaviour, IPausable
 {
 
     [SerializeField] private GameObject spellObject;
@@ -16,17 +16,20 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private Vector2 weaponPosition;
     private Vector2 direction;
 
+    private bool canCast = true;
     private float castSpeed;
     private float timeSinceCast;
 
     private void OnEnable()
     {
         PlayerSpellManager.OnCastRangeUpdated += HandleCastRangeUpdate;
+        GameManager.OnGamePause += HandlePause;
     }
 
     private void OnDisable()
     {
         PlayerSpellManager.OnCastRangeUpdated -= HandleCastRangeUpdate;
+        GameManager.OnGamePause -= HandlePause;
     }
 
     private void Start()
@@ -37,7 +40,7 @@ public class PlayerTargetAndShoot : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Time.time - timeSinceCast > castSpeed)
+        if (canCast & Time.time - timeSinceCast > castSpeed)
         {
             HandleTargeting();
         }
@@ -81,6 +84,11 @@ public class PlayerTargetAndShoot : MonoBehaviour
     private void HandleCastRangeUpdate(PlayerSpellStats stats)
     {
         castRange = stats.castRange;
+    }
+
+    public void HandlePause(bool isPaused)
+    {
+        canCast = !isPaused;
     }
 
 }

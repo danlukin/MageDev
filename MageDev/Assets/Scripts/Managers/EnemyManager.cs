@@ -24,16 +24,22 @@ public class EnemyManager : MonoBehaviour
 
     void Awake()
     {
-        StageManager.OnWaveStateChanged += StageManagerOnWaveStateChanged;
-        Enemy.OnEnemyKilled += EnemyOnKilled;
-
         InstantializeEnemies();
     }
 
-    void OnDestroy()
+    void OnEnable()
+    {
+        StageManager.OnWaveStateChanged += StageManagerOnWaveStateChanged;
+        Enemy.OnEnemyKilled += EnemyOnKilled;
+
+    }
+
+    void OnDisable()
     {
         StageManager.OnWaveStateChanged -= StageManagerOnWaveStateChanged;
         Enemy.OnEnemyKilled -= EnemyOnKilled;
+
+        ResetEnemyManager();
     }
 
     void FixedUpdate()
@@ -100,5 +106,11 @@ public class EnemyManager : MonoBehaviour
         expGem.SpawnExperienceGem(enemy);
         goldCoin.RandomGoldDrop(enemy);
         --activeEnemyCount;
+    }
+
+    private void ResetEnemyManager()
+    {
+        DestroyEnemy?.Invoke(this);
+        activeEnemyCount = 0;
     }
 }
