@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,23 @@ public class ExpGem : MonoBehaviour
     private void Awake()
     {
         exp = baseExp;
+
+        GameManager.OnGameStateChanged += HandleGameStateChange;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChange;
+    }
+
+    private void HandleGameStateChange(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.Camp:
+                Destroy(gameObject);
+                break;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -1,18 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
-    public GameState State;
+    public static GameState State;
+
+    public static bool isPaused;
+
     public static event Action<GameState> OnGameStateChanged;
+    public static event Action<bool> OnGamePause;
+    
 
     void Awake()
     {
         Instance = this;
+        isPaused = false;
+    }
+
+    void OnEnable()
+    {
+        TravelButton.OnTravel += UpdateGameState;
+    }
+
+        void OnDisable()
+    {
+        TravelButton.OnTravel -= UpdateGameState;
     }
 
     void Start()
@@ -20,17 +37,19 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Stage);
     }
 
-    public void UpdateGameState(GameState newState)
+    private void UpdateGameState(GameState newState)
     {
         State = newState;
 
         switch (newState)
         {
             case GameState.Stage:
-                //HandleStage();
+                
                 break;
             case GameState.StageWin:
                 HandleStageWin();
+                break;
+            case GameState.Camp:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -48,10 +67,17 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("youre winner!");
     }
+
+    public static void TogglePause()
+    {
+        isPaused = !isPaused;
+        OnGamePause?.Invoke(isPaused);
+    }
 }
 
 public enum GameState
 {
     Stage,
-    StageWin
+    StageWin,
+    Camp
 }

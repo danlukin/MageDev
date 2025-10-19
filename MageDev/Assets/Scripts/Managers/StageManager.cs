@@ -9,13 +9,14 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance;
     public WaveState waveState;
     public static event Action<WaveState> OnWaveStateChanged;
-    public Text WaveUI;
     public static int waveNumber;
     public static int stageDifficulty = 0;
 
+    [SerializeField] TMP_Text WaveUI;
     [SerializeField] GameObject deathScreen;
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject relicSelectUI;
+    [SerializeField] GameObject relicInventory;
 
     [SerializeField] private int checkpoint = 1;
     private bool waveChanged = false;
@@ -23,19 +24,22 @@ public class StageManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        PlayerHealth.OnPlayerKilled += PlayerHealthOnPlayerKilled;
-        EnemyManager.OnWaveCompleted += EnemyManagerOnWaveCompleted;
     }
 
-    void OnDestroy()
+    void OnEnable()
+    {
+        PlayerHealth.OnPlayerKilled += PlayerHealthOnPlayerKilled;
+        EnemyManager.OnWaveCompleted += EnemyManagerOnWaveCompleted;
+
+        InitializeStage();
+    }
+
+    void OnDisable()
     {
         PlayerHealth.OnPlayerKilled -= PlayerHealthOnPlayerKilled;
         EnemyManager.OnWaveCompleted -= EnemyManagerOnWaveCompleted;
-    }
 
-    void Start()
-    {
-        InitializeStage();
+        UpdateWaveState(WaveState.NotStage);
     }
 
     void Update()
@@ -51,18 +55,21 @@ public class StageManager : MonoBehaviour
 
     private void InitializeStage()
     {
+        waveChanged = false;
         waveNumber = 1;
+        WaveUI.gameObject.SetActive(true);
         UpdateWaveUI();
         UpdateWaveState(WaveState.WaveStart);
-        relicSelectUI.SetActive(true);
+
+        if (relicInventory.transform.childCount == 0) relicSelectUI.SetActive(true);
     }
 
     public void UpdateWaveState(WaveState newState)
     {
         waveState = newState;
-
-        deathScreen.SetActive(newState == WaveState.Dead);
-        winScreen.SetActive(newState == WaveState.StageComplete);
+        
+        if (deathScreen != null) deathScreen.SetActive(newState == WaveState.Dead);
+        if (winScreen != null) winScreen.SetActive(newState == WaveState.StageComplete);
 
         switch (newState)
         {
@@ -72,8 +79,8 @@ public class StageManager : MonoBehaviour
                     //if (CheckForWin()) { UpdateWaveState(WaveState.StageComplete); }
                     //else
                     //{
-                        UpdateWaveNumber("increment");
-                        UpdateWaveState(WaveState.WaveStart);
+                    UpdateWaveNumber("increment");
+                    UpdateWaveState(WaveState.WaveStart);
                     //}
                 }
                 break;
@@ -84,6 +91,9 @@ public class StageManager : MonoBehaviour
                 waveChanged = false;
                 break;
             case WaveState.StageComplete:
+                break;
+            case WaveState.NotStage:
+                if (WaveUI != null) WaveUI.gameObject.SetActive(false);
                 break;
         }
 
@@ -164,5 +174,6 @@ public enum WaveState
     WaveStart,
     Dead,
     WaveComplete,
-    StageComplete
+    StageComplete,
+    NotStage
 }

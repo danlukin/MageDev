@@ -11,14 +11,14 @@ public enum Difficulty
     boss
 }
 
-public class Enemy : MonoBehaviour, IDamageable, IEffectable
+public class Enemy : MonoBehaviour, IDamageable, IEffectable, IPausable
 {
     public static event Action<Enemy> OnEnemyKilled;
 
     [SerializeField] public float maxHealth = 3f;
     [SerializeField] private float currentHealth;
     [SerializeField] private float damage = 1f;
-    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float baseMoveSpeed = 2f;
     [SerializeField] private float maxAngle = 15;
     [SerializeField] private GameObject statusContainer;
 
@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
     private Transform target;
     private Vector2 moveDirection;
     private Vector3 scale;
+    private float moveSpeed;
     private float spawnTime;
     private float spawnImmuneTime = 0.1f;
     private StatusEffect status;
@@ -41,13 +42,28 @@ public class Enemy : MonoBehaviour, IDamageable, IEffectable
     {
         rb = GetComponent<Rigidbody2D>();
         healthBar = GetComponentInChildren<FloatingHealthBar>();
-        EnemyManager.DestroyEnemy += EnemyManagerDestroyEnemy;
         spawnTime = Time.time;
+        moveSpeed = baseMoveSpeed;
+
+        GameManager.OnGamePause += HandlePause;
+        EnemyManager.DestroyEnemy += EnemyManagerDestroyEnemy;
     }
 
     void OnDestroy()
     {
         EnemyManager.DestroyEnemy -= EnemyManagerDestroyEnemy;
+        GameManager.OnGamePause -= HandlePause;
+    }
+
+    public void HandlePause(bool isPaused)
+    {
+        if (isPaused)
+        {
+            moveSpeed = 0;
+        } else
+        {
+            moveSpeed = baseMoveSpeed;
+        }
     }
 
     private void EnemyManagerDestroyEnemy(EnemyManager state)

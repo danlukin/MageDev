@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPausable
 {
     public bool Pressed;
     [SerializeField] private GameObject spellObject;
@@ -26,6 +26,37 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool offCooldown = true;
     private float timeSinceCast;
     private float currentCharge = 1;
+    private bool isEnabled = true;
+
+    private void Awake()
+    {
+        GameManager.OnGameStateChanged += HandleGameStateChange;
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnGamePause += HandlePause;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGamePause -= HandlePause;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChange;
+    }
+
+    private void HandleGameStateChange(GameState state)
+    {
+        gameObject.SetActive(state == GameState.Stage);
+    }
+
+    public void HandlePause(bool isPaused)
+    {
+        isEnabled = !isPaused;
+    }
 
     void Start()
     {
@@ -36,7 +67,7 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (offCooldown)
+        if (offCooldown & isEnabled)
         {
             Pressed = true;
             HandleTargeting();
@@ -47,7 +78,7 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (offCooldown)
+        if (offCooldown & isEnabled)
         {
             Pressed = false;
             Destroy(spellInstance);
@@ -82,7 +113,7 @@ public class SuperButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             HandleTargeting();
             spellInstance.transform.right = direction;
             spellInstance.transform.parent = projectileSpawnPoint;
-
+            
             if (currentCharge < spell.maxChargeStacks)
             {
                 scale = new Vector3(scale.x * 1.05f, scale.y * 1.05f, scale.z);

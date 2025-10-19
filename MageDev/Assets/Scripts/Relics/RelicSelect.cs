@@ -14,14 +14,16 @@ public class RelicSelect : MonoBehaviour
 
     void OnDisable()
     {
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
+        GameManager.TogglePause();
     }
 
     IEnumerator DelayedActivation()
     {
         yield return new WaitForSeconds(0.1f);
 
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
+        GameManager.TogglePause();
         OnSelectActive?.Invoke(gameObject.name);
     }
 
