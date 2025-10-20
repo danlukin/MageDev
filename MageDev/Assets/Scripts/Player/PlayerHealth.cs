@@ -8,10 +8,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private float maxHealth = 10f;
     [SerializeField] private float currentHealth;
 
+    private FloatingHealthBar healthBar;
+
     public static event Action<PlayerHealth> OnPlayerKilled;
 
     void Awake()
     {
+        healthBar = GetComponentInChildren<FloatingHealthBar>();
+
         StageManager.OnWaveStateChanged += StageManagerOnWaveStateChanged;
     }
 
@@ -29,6 +33,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         currentHealth -= damageAmount;
 
+        healthBar.UpdateHealthBar(currentHealth, maxHealth);
+
         if (currentHealth <= 0)
         {
             OnPlayerKilled?.Invoke(this);
@@ -38,6 +44,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void Heal(float healAmount)
     {
         currentHealth += healAmount;
+
+        healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
         if (currentHealth > maxHealth)
         {
