@@ -19,6 +19,7 @@ public class FloatingHealthBar : MonoBehaviour
     public void UpdateHealthBar(float currentValue, float maxValue)
     {
         slider.value = currentValue / maxValue;
+        ToggleVisibility(slider.value < 1);
     }
 
     private void ToggleVisibility(bool visible)
@@ -30,11 +31,5 @@ public class FloatingHealthBar : MonoBehaviour
     private void FixedUpdate()
     {
         gameObject.transform.rotation = camera.transform.rotation;
-
-        // slider range is between 0 and 1
-        if (slider.value < 1)
-        {
-            ToggleVisibility(true);
-        }
     }
 }
