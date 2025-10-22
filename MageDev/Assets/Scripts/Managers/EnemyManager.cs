@@ -1,17 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 public class EnemyManager : MonoBehaviour
 {
-
-    [SerializeField] private int activeEnemyCount = 0;
+    [SerializeField] private float minBoundsPadding;
+    [SerializeField] private float maxBoundsPadding;
     [SerializeField] private Enemy[] enemies;
-    [SerializeField] private ExpGem expGem;
-    [SerializeField] private GoldCoin goldCoin;
+    
+    public int activeEnemyCount = 0;
+    
     public static event Action<EnemyManager> DestroyEnemy;
     public static event Action<EnemyManager> OnWaveCompleted;
     private WaveState waveState;
@@ -95,16 +99,40 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnNewEnemy(Enemy enemy)
     {
-        var position = new Vector3(Random.Range(-9, 9), Random.Range(-9, 9));
+        Vector3 position = GetRandomPosition();
         Quaternion noRotation = Quaternion.Euler(0, 0, 0);
         Instantiate(enemy, position, noRotation);
         ++activeEnemyCount;
     }
 
+    private float[] GetCameraBounds()
+    {
+        Camera cam = Camera.main;
+        Vector3 camPos = cam.transform.position;
+        float vertExtent = cam.orthographicSize;
+        float horzExtent = vertExtent * Screen.width / Screen.height;
+
+        float boundPadding = Random.Range(minBoundsPadding, maxBoundsPadding);
+        float leftBound = camPos.x - horzExtent - boundPadding;
+        float rightBound = camPos.x + horzExtent + boundPadding;
+        float bottomBound = camPos.y - vertExtent - boundPadding;
+        float topBound = camPos.y + vertExtent + boundPadding;
+
+        float[] bounds = {leftBound, rightBound, bottomBound, topBound};
+        return bounds;
+    }
+
+    private Vector3 GetRandomPosition()
+    {
+        float[] bounds = GetCameraBounds();
+        int bound = Random.Range(0, 4);
+
+        if (bound < 2) return new Vector3(bounds[bound], Random.Range(bounds[2], bounds[3]));
+        else return new Vector3(Random.Range(bounds[0], bounds[1]), bounds[bound]);
+    }
+
     private void EnemyOnKilled(Enemy enemy)
     {
-        expGem.SpawnExperienceGem(enemy);
-        goldCoin.RandomGoldDrop(enemy);
         --activeEnemyCount;
     }
 

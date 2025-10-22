@@ -1,15 +1,16 @@
 using System;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
-public class CameraFollow : MonoBehaviour
+public class CameraMovement : MonoBehaviour
 {
     public Transform target;
     [SerializeField] private float xLimit;
     [SerializeField] private float yLimit;
-    
+
     void Update()
     {
-
         float xPos = target.transform.position.x;
         if (Math.Abs(xPos) > xLimit)
             if (xPos < 0)

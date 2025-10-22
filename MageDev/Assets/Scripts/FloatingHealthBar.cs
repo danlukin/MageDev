@@ -18,8 +18,11 @@ public class FloatingHealthBar : MonoBehaviour
 
     public void UpdateHealthBar(float currentValue, float maxValue)
     {
-        slider.value = currentValue / maxValue;
-        ToggleVisibility(slider.value < 1);
+        if (slider != null) 
+        {
+            slider.value = currentValue / maxValue;
+            ToggleVisibility(slider.value < 1);
+        }
     }
 
     private void ToggleVisibility(bool visible)

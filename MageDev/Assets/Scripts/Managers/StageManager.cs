@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,22 +43,11 @@ public class StageManager : MonoBehaviour
         UpdateWaveState(WaveState.NotStage);
     }
 
-    void Update()
-    {
-        if (waveState == WaveState.Dead)
-        {
-            if (Input.anyKey)
-            {
-                UpdateWaveState(WaveState.WaveStart);
-            }
-        }
-    }
-
     private void InitializeStage()
     {
         waveChanged = false;
-        waveNumber = 1;
         WaveUI.gameObject.SetActive(true);
+        UpdateWaveNumber("reset");
         UpdateWaveUI();
         UpdateWaveState(WaveState.WaveStart);
 
@@ -86,6 +76,7 @@ public class StageManager : MonoBehaviour
                 break;
             case WaveState.Dead:
                 UpdateWaveNumber("checkpoint");
+                StartCoroutine(Respawn());
                 break;
             case WaveState.WaveStart:
                 waveChanged = false;
@@ -98,6 +89,13 @@ public class StageManager : MonoBehaviour
         }
 
         OnWaveStateChanged?.Invoke(newState);
+    }
+
+    IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(5f);
+
+        UpdateWaveState(WaveState.WaveStart);
     }
 
     private void EnemyManagerOnWaveCompleted(EnemyManager state)
