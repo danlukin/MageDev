@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IPausable
 {
@@ -48,14 +49,8 @@ public class PlayerController : MonoBehaviour, IPausable
 
     private void AllowMovement(bool allowed)
     {
-        if (allowed)
-        {
-            speed = baseSpeed;
-        }
-        else
-        {
-            speed = 0;
-        }
+        if (allowed) speed = baseSpeed;
+        else speed = 0;
     }
 
     public void HandlePause(bool isPaused)
@@ -119,7 +114,8 @@ public class PlayerController : MonoBehaviour, IPausable
     private void HandleAutoDirection()
     {
         playerPos = rb.transform.position;
-        direction = (playerPos - targetPos).normalized;
+        Vector2 randomDrift = new Vector2(Random.Range(0.5f, 2f), Random.Range(0.5f, 2f));
+        direction = (playerPos - targetPos).normalized * randomDrift;
     }
 
     private void HandleAutoMove()
@@ -145,5 +141,4 @@ public class PlayerController : MonoBehaviour, IPausable
 
         inCollision = false;
     }
-
 }

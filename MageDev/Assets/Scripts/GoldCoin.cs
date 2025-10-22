@@ -1,15 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GoldCoin : MonoBehaviour
 {
     [SerializeField] private int baseGold = 1;
     private int gold;
 
+    public static event Action<GameObject> OnGoldDrop;
+    public static event Action<GameObject> OnGoldPickUp;
+
     private void Awake()
     {
         gold = baseGold;
+    }
+
+    void OnDestroy()
+    {
+        OnGoldPickUp?.Invoke(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -48,6 +58,8 @@ public class GoldCoin : MonoBehaviour
     public void SpawnGoldCoin(Enemy enemy)
     {
         Vector3 spawnPosition = enemy.transform.position;
-        Instantiate(this, spawnPosition, Quaternion.identity);
+        GoldCoin newCoin = Instantiate(this, spawnPosition, Quaternion.identity);
+
+        OnGoldDrop?.Invoke(newCoin.gameObject);
     }
 }

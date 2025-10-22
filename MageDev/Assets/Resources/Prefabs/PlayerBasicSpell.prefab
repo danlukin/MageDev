@@ -166,7 +166,7 @@ MonoBehaviour:
   collisionEnabled: 1
   collidesWith:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 512
   effects:
     serializedVersion: 2
     m_Bits: 512

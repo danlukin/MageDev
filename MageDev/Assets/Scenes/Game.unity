@@ -4144,6 +4144,7 @@ Transform:
   - {fileID: 1993213253}
   - {fileID: 1327844337}
   - {fileID: 936249386}
+  - {fileID: 686581811}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &500650135
@@ -10521,8 +10522,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 115762478}
-  xLimit: 8
-  yLimit: 10
+  xLimit: 6
+  yLimit: 6
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11133,6 +11134,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671236851}
   m_CullTransparentMesh: 1
+--- !u!1 &686581810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 686581811}
+  - component: {fileID: 686581812}
+  m_Layer: 0
+  m_Name: DroppedItemsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &686581811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686581810}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 490146090}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &686581812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686581810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6ca5decb9ad074a9176e99214991a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  expGem: {fileID: -5508659787176189276, guid: 1b6cc5102b4b43449abebabc9a44609a, type: 3}
+  goldCoin: {fileID: 1541920280591096961, guid: 0b5a6bc6b32aebb4ebf0830a6ca07ed9, type: 3}
 --- !u!1 &692152477
 GameObject:
   m_ObjectHideFlags: 0
@@ -11411,13 +11458,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c293d9726e980aa4d9f4f92a61059f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeEnemyCount: 0
+  minBoundsPadding: 0
+  maxBoundsPadding: 0
   enemies:
   - {fileID: 2396213438329710344, guid: 11142079c01592945bc3be9963344fef, type: 3}
   - {fileID: 254533752991242245, guid: 531eb783ba0548141ab157f5a816ac0e, type: 3}
   - {fileID: 3992835948023716297, guid: db92eb6a854708c4891a7a2d0593fb37, type: 3}
-  expGem: {fileID: -5508659787176189276, guid: 1b6cc5102b4b43449abebabc9a44609a, type: 3}
-  goldCoin: {fileID: 1541920280591096961, guid: 0b5a6bc6b32aebb4ebf0830a6ca07ed9, type: 3}
+  activeEnemyCount: 0
 --- !u!1 &736483831
 GameObject:
   m_ObjectHideFlags: 0
@@ -11760,7 +11807,7 @@ Transform:
   m_GameObject: {fileID: 819487363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: 5}
+  m_LocalPosition: {x: 0, y: -4, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
